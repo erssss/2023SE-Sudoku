@@ -36,7 +36,7 @@ void create_sudoku(string path, bool is_puzzle, bool is_unique, int hole_num,
                    int hardness, int counts) {
     if (counts > 0 && counts <= 100000) {
             test_input_flag = 5;
-            Generator board(path,hole_num,hardness,counts);
+            Generator board(path,hole_num,hardness,counts,is_unique);
 			// std::cout<<"hardness = "<<board.hardness<<"\n";
             board.Create(is_puzzle);
 			if(!is_puzzle)

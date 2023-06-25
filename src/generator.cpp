@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include "solution.h"
 
 int idx[] = {1, 4, 7};
 
@@ -97,7 +98,8 @@ void Generator::Getpuzzle() {
     int empty[SIZE];
     char tmp_chessboard[SIZE][SIZE];
     int sum = 0;
-
+    Puzzle puzzle;
+    puzzle.load(tmp_chessboard);
     for (int i = 1; i <= 9; i++) {
         empty[i] = 0;
         for (int j = 1; j <= 9; j++) {
@@ -142,10 +144,10 @@ void Generator::Getpuzzle() {
 	}
 	else if (hardness == 2) {
 		while (sum <= hole_num ) {
-			empty[1] += rand() % 3;
+			empty[1] += rand() % 5;
 			sum += empty[1];
 			for (int i = 2; i <= 9&&sum <= hole_num; i++) {
-				empty[i] += rand() % 5 + 1;
+				empty[i] += rand() % 6 + 2;
 				sum += empty[i];
 			}
 		}
@@ -164,7 +166,17 @@ void Generator::Getpuzzle() {
             i = idx[(k - 1) / 3] + (tmp - 1) / 3;
             j = idx[(k - 1) % 3] + (tmp - 1) % 3;
             if (tmp_chessboard[i][j]) {
+                char ch = tmp_chessboard[i][j];
                 tmp_chessboard[i][j] = '0';
+                puzzle.load(tmp_chessboard);
+                puzzle.InitBoard();
+                
+                if(is_unique&&!puzzle.Solution()){
+                    // std::cout<<"unique check\n";
+                    tmp_chessboard[i][j]=ch;
+                    continue;
+                }
+
                 empty[k]--;
             }
         }

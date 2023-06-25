@@ -27,12 +27,13 @@ class Generator {
     std::string path;
     int hardness;
     int hole_num;
+	bool is_unique;
     Generator(int n = 0) : num(n), out_cnt(0) {
         memset(chessboard, 0, sizeof(chessboard));
         out = NULL;
     }
-    Generator(string p, int hole_num = 30, int hardness = 0, int n = 0)
-        : num(n), hole_num(hole_num), hardness(hardness), out_cnt(0) {
+    Generator(string p, int hole_num = 30, int hardness = 0, int n = 0,bool is_unique=0)
+        : num(n), hole_num(hole_num), hardness(hardness), out_cnt(0),is_unique(is_unique) {
         memset(chessboard, 0, sizeof(chessboard));
         out = NULL;
         path = p;

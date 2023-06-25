@@ -40,6 +40,21 @@ bool Puzzle::Read(string path) {
     return true;
 }
 
+
+bool Puzzle::load(char mat[SIZE][SIZE]) {
+    read = new char[SIZE * SIZE];
+    out = new char[SIZE * SIZE * 2];
+	int cnt=0;
+	for (int i = 1; i <= 9; i++) {
+        for (int j = 1; j <= 9; j++) {
+            read[cnt++] = mat[i][j];
+        }
+    }
+
+    return true;
+}
+
+
 void Puzzle::Init() {
     memset(column, 0, sizeof(column));
     memset(row, 0, sizeof(row));
@@ -188,8 +203,9 @@ bool Puzzle::dfs(int tmp, Node node[]) {
     return false;
 }
 
-void Puzzle::Solution() {
+bool Puzzle::Solution() {
     bool flag = true;
+	bool unique = true;
     Node tmp(-1, -1, -1);
     while (empty_num) {
         // 填写唯一解空格
@@ -224,6 +240,7 @@ void Puzzle::Solution() {
         if (!empty_num)
             break;
         // 求出所有非唯一解空格可填的数字，dfs求解
+		unique=false;
         Node node[65];
         int cot = 0;
         while (!que.isEmpty()) {
@@ -242,7 +259,9 @@ void Puzzle::Solution() {
         }
         std::sort(node + 1, node + cot + 1);
         if (!dfs(1, node)) {
-            std::cout << ("有不合法数独\n");
+            // std::cout << ("有不合法数独\n");
+			return 0;
         }
     }
+	return unique;
 }

@@ -72,10 +72,7 @@ private:
 		}
 	};
 	Queue<Node> que;  //求解显性+隐性唯一解的空格队列
-	void Solution(); //数独求解 1.唯一解填充 2.dfs可行解
-	void Init(); 
-	bool dfs(int tmp, Node node[]);
-	void GetBoard();
+
 
 public:
 	void PrintBoard(); 
@@ -83,7 +80,12 @@ public:
 	void InitBoard();
 	void Output(string psth); 
 	bool Read(string path);
+	bool load(char mat[SIZE][SIZE]);
 	void PrintSolver();
+	bool Solution(); //数独求解 1.唯一解填充 2.dfs可行解
+	void Init(); 
+	bool dfs(int tmp, Node node[]);
+	void GetBoard();
 	Puzzle() : read_cnt(0), out_cnt(0), empty_num(0)
 	{
 		out = NULL;

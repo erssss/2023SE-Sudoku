@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
 	char charArray[16];
 	strcpy(charArray, c.c_str());
 	std::srand(std::time(nullptr));
-	
+
     while ((ch = getopt(argc, argv, charArray)) != -1) {
         switch (ch) {
         case 'f':
@@ -135,6 +135,7 @@ int main(int argc, char **argv) {
 		solve_sudoku(path);
 	else if(type==1){
 		is_puzzle = 1;
+		std::cout<<"is unique = "<<is_unique<<"\n";
 		create_sudoku(path,is_puzzle,is_unique,hole_num,hardness,counts);
 	}
 	else if(type==0)
