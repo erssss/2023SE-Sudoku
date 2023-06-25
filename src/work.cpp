@@ -58,10 +58,6 @@ void solve_sudoku(string path) {
         return;
     }
 
-    if ((solution_fp = fopen("sudoku_solution.txt", "w+")) == NULL) {
-        std::cout << ("创建数独求解文件失败\n");
-        return;
-    }
 
     std::cout << "input_path = " << path << "\n";
     Puzzle puzzle;
@@ -71,7 +67,7 @@ void solve_sudoku(string path) {
         return;
     }
     puzzle.InitBoard();
-    puzzle.Output();
+    puzzle.Output(path);
 
     fclose(solution_fp);
     std::cout << ("数独求解成功\n");
