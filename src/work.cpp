@@ -35,23 +35,16 @@ int str2int(char *s) {
 void create_sudoku(string path, bool is_puzzle, bool is_unique, int hole_num,
                    int hardness, int counts) {
     if (counts > 0 && counts <= 100000) {
-        if (is_puzzle == 0) {
-            test_input_flag = 5; // 生成终局命令合法
-            if ((generator_fp = fopen("sudoku_end.txt", "w+")) == NULL) {
-                std::cout << ("创建数独文件失败\n");
-                return;
-            }
-
-            Generator board(counts);
+            test_input_flag = 5;
+            Generator board(path,counts);
             board.Create(is_puzzle);
-            board.Output();
+			if(!is_puzzle)
+            	board.Output();
+			if(is_puzzle)
+				std::cout << "数独谜题生成成功\n";
+			else
+				std::cout << "数独终局生成成功\n";
 
-            fclose(generator_fp);
-            std::cout << ("数独生成成功\n");
-
-
-        } else {
-        }
     } else {
         test_input_flag = 4; // 终局数量越界
         std::cout << ("请输入正确的数量，范围是1≤N≤1000000\n");
@@ -70,7 +63,7 @@ void solve_sudoku(string path) {
         return;
     }
 
-    std::cout << "path = " << path << "\n";
+    std::cout << "input_path = " << path << "\n";
     Puzzle puzzle;
     if (!puzzle.Read(path)) {
         std::cout << ("求解数独文件路径不合法\n");

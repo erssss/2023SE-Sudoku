@@ -13,9 +13,21 @@ extern FILE *puzzle_fp;
 extern FILE *generator_fp;
 
 void Generator::Output() {
-    if (fwrite(out, out_cnt, 1, generator_fp) != 1)
-        std::cout << ("输出数独终局失败\n");
+    std::ofstream generator_file(path); // 打开输出文件
+
+    if (!generator_file) {
+        std::cout << "无法打开文件\n";
+        return;
+    }
+
+    generator_file.write(out, out_cnt);
+
+    if (!generator_file) {
+        std::cout << "输出数独终局失败\n";
+    }
+
     delete[] out;
+    generator_file.close(); // 关闭文件
 }
 
 void Generator::Getchessboard(int ord[], char firstrow[], bool is_puzzle) {
@@ -38,7 +50,6 @@ void Generator::Getchessboard(int ord[], char firstrow[], bool is_puzzle) {
         out[out_cnt++] = '\n';
     }
     if (is_puzzle) {
-        std::cout << "puzzle!\n";
         Getpuzzle();
     }
 }
@@ -73,7 +84,7 @@ bool Generator::Create_exchange(int ord[], char firstrow[], bool is_puzzle) {
 
                 num--;
                 Getchessboard(ord, firstrow, is_puzzle);
-                if (!num)
+                if (num == 0)
                     return true;
             }
         }
@@ -120,7 +131,7 @@ void Generator::Getpuzzle() {
             }
         }
     }
-    std::ofstream puzzle_file("puzzle.txt");
+    std::ofstream puzzle_file(path, std::ios::app);
 
     // 输出quzzle到文件
     for (int i = 1; i <= 9; i++) {
@@ -131,17 +142,7 @@ void Generator::Getpuzzle() {
     }
 
     if (num)
-        puzzle_file << '\n';
+        puzzle_file << "\n";
 
     puzzle_file.close();
-
-    // // 输出quzzle到文件
-    // for (int i = 1; i <= 9; i++) {
-    //     for (int j = 1; j <= 9; j++) {
-    //         fprintf(puzzle_fp, "%c%c", tmp_chessboard[i][j],
-    //                 j == 9 ? '\n' : ' ');
-    //     }
-    // }
-    // if (num)
-    //     fprintf(puzzle_fp, "\n");
 }

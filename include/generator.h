@@ -1,7 +1,9 @@
 #ifndef __GENERATOR_H__
 #define __GENERATOR_H__
 #include <cstring>
+#include <string>
 
+using namespace std;
 #define SIZE 10
 
 class Generator
@@ -29,10 +31,17 @@ private:
 public:
 	void Create(bool is_puzzle); 
 	void Output();
+	std::string path;
 	Generator(int n = 0) : num(n), out_cnt(0) 
 	{
 		memset(chessboard, 0, sizeof(chessboard));
 		out = NULL;
+	} 
+	Generator(string p,int n = 0) : num(n), out_cnt(0) 
+	{
+		memset(chessboard, 0, sizeof(chessboard));
+		out = NULL;
+		path = p;
 	} 
 };
 
