@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <cstring>
 #include <ctime>
+#include <fstream>
 #include <iostream>
 #include <string>
 
@@ -17,7 +18,7 @@ void Generator::Output() {
     delete[] out;
 }
 
-void Generator::Getchessboard(int ord[], char firstrow[],bool is_puzzle) {
+void Generator::Getchessboard(int ord[], char firstrow[], bool is_puzzle) {
     for (int i = 1; i <= 9; i++) {
         for (int j = 1; j <= 9; j++) {
             chessboard[i][j] = firstrow[modle[i][ord[j - 1]] - 'a'];
@@ -36,8 +37,8 @@ void Generator::Getchessboard(int ord[], char firstrow[],bool is_puzzle) {
     if (num) {
         out[out_cnt++] = '\n';
     }
-    if(is_puzzle){
-        std::cout<<"puzzle!\n";
+    if (is_puzzle) {
+        std::cout << "puzzle!\n";
         Getpuzzle();
     }
 }
@@ -49,12 +50,12 @@ void Generator::Create(bool is_puzzle) {
     char firstrow[SIZE] = {"912345678"};
     int ord[SIZE];
     do {
-        if (Create_exchange(ord, firstrow,is_puzzle))
+        if (Create_exchange(ord, firstrow, is_puzzle))
             break;
     } while (std::next_permutation(firstrow + 1, firstrow + 9));
 }
 
-bool Generator::Create_exchange(int ord[], char firstrow[],bool is_puzzle) {
+bool Generator::Create_exchange(int ord[], char firstrow[], bool is_puzzle) {
     char per1[2][4] = {"123", "132"},
          per2[6][4] = {"456", "465", "546", "564", "645", "654"},
          per3[6][4] = {"789", "798", "879", "897", "978", "987"};
@@ -71,7 +72,7 @@ bool Generator::Create_exchange(int ord[], char firstrow[],bool is_puzzle) {
                     ord[kk + 6] = per3[k][kk] - '0';
 
                 num--;
-                Getchessboard(ord, firstrow,is_puzzle);
+                Getchessboard(ord, firstrow, is_puzzle);
                 if (!num)
                     return true;
             }
@@ -119,14 +120,28 @@ void Generator::Getpuzzle() {
             }
         }
     }
+    std::ofstream puzzle_file("puzzle.txt");
 
     // 输出quzzle到文件
     for (int i = 1; i <= 9; i++) {
         for (int j = 1; j <= 9; j++) {
-            fprintf(puzzle_fp, "%c%c", tmp_chessboard[i][j],
-                    j == 9 ? '\n' : ' ');
+            puzzle_file << tmp_chessboard[i][j];
+            puzzle_file << (j == 9 ? '\n' : ' ');
         }
     }
+
     if (num)
-        fprintf(puzzle_fp, "\n");
+        puzzle_file << '\n';
+
+    puzzle_file.close();
+
+    // // 输出quzzle到文件
+    // for (int i = 1; i <= 9; i++) {
+    //     for (int j = 1; j <= 9; j++) {
+    //         fprintf(puzzle_fp, "%c%c", tmp_chessboard[i][j],
+    //                 j == 9 ? '\n' : ' ');
+    //     }
+    // }
+    // if (num)
+    //     fprintf(puzzle_fp, "\n");
 }

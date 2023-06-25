@@ -78,8 +78,8 @@ int main(int argc, char **argv) {
 	int hole_num = 0;
 	int hardness = 0;
 	string path="";
-	string c = "f:t:m:n:d:p:u:h";
-	char charArray[16]; // 假设足够大以容纳字符串
+	string c = "f:t:m:n:d:u:h";
+	char charArray[16];
 	strcpy(charArray, c.c_str());
     while ((ch = getopt(argc, argv, charArray)) != -1) {
         switch (ch) {
@@ -89,9 +89,9 @@ int main(int argc, char **argv) {
         case 't':
             type = atoll(optarg);
             break;
-		case 'p':
-			is_puzzle = 1;
-            break;
+		// case 'p':
+		// 	is_puzzle = 1;
+        //     break;
 		case 'u':
 			is_unique = 1;
             break;
@@ -107,11 +107,10 @@ int main(int argc, char **argv) {
         case 'h':
             std::cout<<"【操作提示】:\n";
             std::cout<<"\t-f | 文件路径\n";
-            std::cout<<"\t-t | 创建数独/求解数独[0/1] \n";
+            std::cout<<"\t-t | 创建数独终局/创建数独谜题/求解数独[0/1/2] \n";
             std::cout<<"\t-m | 创建数独难度\n";
             std::cout<<"\t-n | 创建数独数量\n";
             std::cout<<"\t-d | 数独填空数目\n";
-            std::cout<<"\t-p | 创建数独谜题\n";
             std::cout<<"\t-u | 创建数独解唯一\n";
             std::cout<<"\t-h | 操作提示\n";
             return 0;
@@ -122,8 +121,12 @@ int main(int argc, char **argv) {
 	if(is_puzzle){
         std::cout<<"puzzle!\n";
     }
-	if(type==1)
+	if(type==2)
 		solve_sudoku(path);
+	else if(type==1){
+		is_puzzle = 1;
+		create_sudoku(path,is_puzzle,is_unique,hole_num,hardness,counts);
+	}
 	else if(type==0)
 		create_sudoku(path,is_puzzle,is_unique,hole_num,hardness,counts);
 	else{
