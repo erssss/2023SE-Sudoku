@@ -1,4 +1,5 @@
 #include "work.h"
+#include <iomanip>
 using namespace std;
 
 char *optarg = NULL;
@@ -77,7 +78,10 @@ int main(int argc, char **argv) {
 	int hole_num = 0;
 	int hardness = 0;
 	string path="";
-    while ((ch = getopt(argc, argv, "f:c:s:p:h")) != -1) {
+	string c = "f:t:m:n:d:p:u:h";
+	char charArray[16]; // 假设足够大以容纳字符串
+	strcpy(charArray, c.c_str());
+    while ((ch = getopt(argc, argv, charArray)) != -1) {
         switch (ch) {
         case 'f':
             path = optarg;
@@ -114,6 +118,9 @@ int main(int argc, char **argv) {
         default:
             break;
         }
+    }
+	if(is_puzzle){
+        std::cout<<"puzzle!\n";
     }
 	if(type==1)
 		solve_sudoku(path);

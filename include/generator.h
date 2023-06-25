@@ -23,12 +23,12 @@ private:
 		"0fdeighcab",
 		"0ighcabfde"
 	};    
-	void Getchessboard(int ord[SIZE], char firstrow[SIZE]); //数独终局输出
-	bool Create_exchange(int ord[SIZE], char firstrow[SIZE]); //数独终局列交换
+	void Getchessboard(int ord[SIZE], char firstrow[SIZE],bool is_puzzle); //数独终局输出
+	bool Create_exchange(int ord[SIZE], char firstrow[SIZE],bool is_puzzle); //数独终局列交换
 	void Getpuzzle(); //生成含空格的puzzle
 public:
-	void Create(); //生成数独终局
-	void Output(); //输出数独终局到文件sudoku.txt
+	void Create(bool is_puzzle); 
+	void Output();
 	Generator(int n = 0) : num(n), out_cnt(0) 
 	{
 		memset(chessboard, 0, sizeof(chessboard));

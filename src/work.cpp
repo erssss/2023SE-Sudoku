@@ -1,7 +1,7 @@
 #include "work.h"
 #include "generator.h"
 #include "solution.h"
-
+#include <cstring>
 
 FILE *puzzle_fp = NULL;
 FILE *generator_fp = NULL;
@@ -32,66 +32,55 @@ int str2int(char *s) {
     return x;
 }
 
-void create_sudoku(string path,bool is_puzzle,bool is_unique, 
-					int hole_num,int hardness,int counts){
-
-        if (counts <= 0 || counts >=100000) {
+void create_sudoku(string path, bool is_puzzle, bool is_unique, int hole_num,
+                   int hardness, int counts) {
+    if (counts > 0 && counts <= 100000) {
+        if (is_puzzle == 0) {
             test_input_flag = 5; // 生成终局命令合法
-            // if ((puzzle_fp = fopen("puzzle.txt", "w+")) == NULL) {
-            //	std::cout<<("创建puzzle.txt文件失败\n");
-            //	return -1;
-            // }
-
             if ((generator_fp = fopen("sudoku_end.txt", "w+")) == NULL) {
-                std::cout << ("创建数独终局文件失败\n");
+                std::cout << ("创建数独文件失败\n");
                 return;
             }
 
             Generator board(counts);
-            board.Create();
+            board.Create(is_puzzle);
             board.Output();
 
             fclose(generator_fp);
-            std::cout << ("数独终局生成成功\n");
+            std::cout << ("数独生成成功\n");
 
-            // fclose(puzzle_fp);
-            // puzzle_fp = NULL;
 
         } else {
-            test_input_flag = 4; // 终局数量越界
-            std::cout << ("请输入正确的数独终局数量，范围是1≤N≤1000000\n");
         }
-
+    } else {
+        test_input_flag = 4; // 终局数量越界
+        std::cout << ("请输入正确的数量，范围是1≤N≤1000000\n");
+    }
 }
 
+void solve_sudoku(string path) {
+    if (path == "") {
+        test_input_flag = 6; // 没有输入求解数独文件路径
+        std::cout << ("请输入数独文件\n");
+        return;
+    }
 
-void solve_sudoku(string path){
-        char *path = NULL;
-        path = argv[2];
-        if (path == NULL) {
-            test_input_flag = 6; // 没有输入求解数独文件路径
-            std::cout << ("请输入数独文件\n");
-            return;
-        }
+    if ((solution_fp = fopen("sudoku_solution.txt", "w+")) == NULL) {
+        std::cout << ("创建数独求解文件失败\n");
+        return;
+    }
 
-        if ((solution_fp = fopen("sudoku_solution.txt", "w+")) == NULL) {
-            std::cout << ("创建数独求解文件失败\n");
-            return;
-        }
+    std::cout << "path = " << path << "\n";
+    Puzzle puzzle;
+    if (!puzzle.Read(path)) {
+        std::cout << ("求解数独文件路径不合法\n");
+        test_input_flag = 7; // 求解数独文件路径不合法
+        return;
+    }
+    puzzle.InitBoard();
+    puzzle.Output();
 
-        std::cout << "path = " << path << "\n";
-        Puzzle puzzle;
-        if (!puzzle.Read(path)) {
-            std::cout << ("求解数独文件路径不合法\n");
-            test_input_flag = 7; // 求解数独文件路径不合法
-            return;
-        }
-        puzzle.InitBoard();
-        puzzle.Output();
-
-        fclose(solution_fp);
-        std::cout << ("数独求解成功\n");
-        test_input_flag = 8; // 求解数独命令合法
-
+    fclose(solution_fp);
+    std::cout << ("数独求解成功\n");
+    test_input_flag = 8; // 求解数独命令合法
 }
-

@@ -4,7 +4,8 @@
 #include <cstring>
 #include <ctime>
 #include <iostream>
-#pragma warning(disable : 4996)
+
+using namespace std;
 
 extern FILE *puzzle_fp;
 extern FILE *generator_fp;
@@ -23,7 +24,9 @@ extern FILE *generator_fp;
 */
 extern int test_input_flag; // 用于单元测试输入是否正确
 
-int str2int(char *s);    // 字符串转数字
-void work(char *argv[]); // main函数
+int str2int(char *s);
+void create_sudoku(string path, bool is_puzzle, bool is_unique, int hole_num,
+                   int hardness, int counts);
+void solve_sudoku(string path);
 
 #endif //!__WORK_H_
