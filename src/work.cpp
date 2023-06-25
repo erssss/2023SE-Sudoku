@@ -2,11 +2,14 @@
 #include "generator.h"
 #include "solution.h"
 
+
 FILE *puzzle_fp = NULL;
 FILE *generator_fp = NULL;
 FILE *solution_fp = NULL;
 
 int test_input_flag = 0;
+
+using namespace std;
 
 // 判断输入数独数量大小n是否合法
 int str2int(char *s) {
@@ -29,30 +32,22 @@ int str2int(char *s) {
     return x;
 }
 
-void work(char *argv[]) {
-    if (strcmp(argv[1], "-c") == 0) {
-        int n = 0;
-        char *number = NULL;
-        number = argv[2];
-        if (number == NULL) {
-            test_input_flag = 1; // 参数只有-c，没有输入终局个数
-            std::cout << ("请输入数独终局个数\n");
-            return;
-        }
-        n = str2int(number);
-        if (n >= 1) {
+void create_sudoku(string path,bool is_puzzle,bool is_unique, 
+					int hole_num,int hardness,int counts){
+
+        if (counts <= 0 || counts >=100000) {
             test_input_flag = 5; // 生成终局命令合法
             // if ((puzzle_fp = fopen("puzzle.txt", "w+")) == NULL) {
             //	std::cout<<("创建puzzle.txt文件失败\n");
             //	return -1;
             // }
 
-            if ((generator_fp = fopen("sudoku.txt", "w+")) == NULL) {
+            if ((generator_fp = fopen("sudoku_end.txt", "w+")) == NULL) {
                 std::cout << ("创建数独终局文件失败\n");
                 return;
             }
 
-            Generator board(n);
+            Generator board(counts);
             board.Create();
             board.Output();
 
@@ -62,11 +57,15 @@ void work(char *argv[]) {
             // fclose(puzzle_fp);
             // puzzle_fp = NULL;
 
-        } else if (n == 0) {
-            test_input_flag = 4; // 终局数量为0
+        } else {
+            test_input_flag = 4; // 终局数量越界
             std::cout << ("请输入正确的数独终局数量，范围是1≤N≤1000000\n");
         }
-    } else if (strcmp(argv[1], "-s") == 0) {
+
+}
+
+
+void solve_sudoku(string path){
         char *path = NULL;
         path = argv[2];
         if (path == NULL) {
@@ -94,8 +93,5 @@ void work(char *argv[]) {
         std::cout << ("数独求解成功\n");
         test_input_flag = 8; // 求解数独命令合法
 
-    } else {
-        test_input_flag = 9; // 命令参数有误
-        std::cout << ("请输入正确的命令参数\n");
-    }
 }
+
