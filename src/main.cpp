@@ -75,12 +75,14 @@ int main(int argc, char **argv) {
 	int counts = 0;
 	bool is_puzzle = 0;
 	bool is_unique = 0;
-	int hole_num = 0;
+	int hole_num = 30;
 	int hardness = 0;
 	string path="";
 	string c = "f:t:m:n:d:u:h";
 	char charArray[16];
 	strcpy(charArray, c.c_str());
+	std::srand(std::time(nullptr));
+	
     while ((ch = getopt(argc, argv, charArray)) != -1) {
         switch (ch) {
         case 'f':
@@ -110,7 +112,7 @@ int main(int argc, char **argv) {
             std::cout<<"\t-t | 创建数独终局/创建数独谜题/求解数独[0/1/2] \n";
             std::cout<<"\t-m | 创建数独难度\n";
             std::cout<<"\t-n | 创建数独数量\n";
-            std::cout<<"\t-d | 数独填空数目\n";
+            std::cout<<"\t-d | 数独填空数目区间\n";
             std::cout<<"\t-u | 创建数独解唯一\n";
             std::cout<<"\t-h | 操作提示\n";
             return 0;
@@ -118,6 +120,14 @@ int main(int argc, char **argv) {
             break;
         }
     }
+
+
+	if(hardness>2||hardness<0){
+		std::cout<<"请输入正确的难度！\n";
+		return 1;
+	}
+
+
 	if(is_puzzle){
         std::cout<<"puzzle!\n";
     }

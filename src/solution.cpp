@@ -62,8 +62,7 @@ void Puzzle::PrintSolver(){
 }
 
 void Puzzle::InitBoard() {
-	PrintBoard();
-	std::cout<<"\nbefore >>>\n";
+	// PrintBoard();
     int len = strlen(read);
     for (int ch = 0; ch < len;) { // 依次读取每一个字符
 
@@ -76,7 +75,6 @@ void Puzzle::InitBoard() {
 
                 int k = (i - 1) / 3 * 3 + (j - 1) / 3 + 1;
                 if (puzzleboard[i][j] == '0') {
-					std::cout<<"hole ";
                     que.push(Node(i, j, k));
                     empty_num++;
                 } else {
@@ -100,6 +98,7 @@ void Puzzle::InitBoard() {
 }
 
 void Puzzle::GetBoard() {
+	out_cnt = 0;
     for (int i = 1; i <= 9; i++) {
         for (int j = 1; j <= 9; j++) {
             out[out_cnt++] = puzzleboard[i][j];
@@ -119,12 +118,12 @@ void Puzzle::PrintBoard() {
 
 void Puzzle::Output(string path) {
 
-    std::cout << "\nstart write " << out_cnt << "\n";
+    // std::cout << "\nstart write " << out_cnt << "\n";
 	PrintSolver();
     // PrintBoard();
 	
 	std::cout<<"cnt = "<<out_cnt<<"\n";
-    std::ofstream solution_file("solved_.txt");  // 打开文件以写入模式
+    std::ofstream solution_file("solved_"+path);  // 打开文件以写入模式
 
 	if (!solution_file) {
 	    std::cout << "创建数独求解文件失败\n";

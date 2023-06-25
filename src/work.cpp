@@ -36,7 +36,8 @@ void create_sudoku(string path, bool is_puzzle, bool is_unique, int hole_num,
                    int hardness, int counts) {
     if (counts > 0 && counts <= 100000) {
             test_input_flag = 5;
-            Generator board(path,counts);
+            Generator board(path,hole_num,hardness,counts);
+			// std::cout<<"hardness = "<<board.hardness<<"\n";
             board.Create(is_puzzle);
 			if(!is_puzzle)
             	board.Output();
@@ -47,7 +48,7 @@ void create_sudoku(string path, bool is_puzzle, bool is_unique, int hole_num,
 
     } else {
         test_input_flag = 4; // 终局数量越界
-        std::cout << ("请输入正确的数量，范围是1≤N≤1000000\n");
+        std::cout << ("请输入正确的数量，范围是1~100000\n");
     }
 }
 
@@ -58,7 +59,6 @@ void solve_sudoku(string path) {
         return;
     }
 
-
     std::cout << "input_path = " << path << "\n";
     Puzzle puzzle;
     if (!puzzle.Read(path)) {
@@ -68,7 +68,6 @@ void solve_sudoku(string path) {
     }
     puzzle.InitBoard();
     puzzle.Output(path);
-
     fclose(solution_fp);
     std::cout << ("数独求解成功\n");
     test_input_flag = 8; // 求解数独命令合法

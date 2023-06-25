@@ -1,4 +1,5 @@
 #include "generator.h"
+#include <cassert>
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
@@ -98,26 +99,63 @@ void Generator::Getpuzzle() {
     int sum = 0;
 
     for (int i = 1; i <= 9; i++) {
+        empty[i] = 0;
         for (int j = 1; j <= 9; j++) {
             tmp_chessboard[i][j] = chessboard[i][j];
         }
     }
 
     // 随机生成每个3*3内空格数量
-    while (sum < 30 || sum > 60) {
-        sum = 0;
-
-        empty[1] = rand() % 7 + 2; // 随机生成2~8
-        sum += empty[1];
-        for (int i = 2; i <= 9; i++) {
-            if (empty[i - 1] >= 5) // 上一个空格过多，生成2~4
-                empty[i] = rand() % 3 + 2;
-            else // 上一个空格过少，生成5~8
-                empty[i] = rand() % 4 + 5;
-            sum += empty[i];
-        }
+    // while (sum <= hole_num) {
+    //     sum = 0;
+    //     empty[1] = rand() % 7 + 2; // 随机生成2~8
+    //     sum += empty[1];
+    //     for (int i = 2; i <= 9; i++) {
+    //         if (empty[i - 1] >= 5) // 上一个空格过多，生成2~4
+    //             empty[i] = rand() % 3 + 2;
+    //         else // 上一个空格过少，生成5~8
+    //             empty[i] = rand() % 4 + 5;
+    //         sum += empty[i];
+    //     }
+    // }
+    
+	if (hardness == 1) {
+		while (sum <= hole_num) {
+			empty[1] += (rand() % 3); 
+			sum += empty[1];
+			for (int i = 2; i <= 9&&sum <= hole_num; i++) {
+                // std::cout<<sum<<"<<<<\n";
+				empty[i] += (rand() % 3 + 1);
+				sum += empty[i];
+			}
+		}
+	}
+	else if (hardness == 0) {
+		while (sum <= hole_num) {
+			empty[1] += rand() % 3;
+			sum += empty[1];
+			for (int i = 2; i <= 9&&sum <= hole_num; i++) {
+				empty[i] += rand() % 3;
+				sum += empty[i];
+			}
+		}
+	}
+	else if (hardness == 2) {
+		while (sum <= hole_num ) {
+			empty[1] += rand() % 3;
+			sum += empty[1];
+			for (int i = 2; i <= 9&&sum <= hole_num; i++) {
+				empty[i] += rand() % 5 + 1;
+				sum += empty[i];
+			}
+		}
+	}
+    else {
+        assert(0);
     }
 
+    // for(int i=0;i<9;i++)
+        // std::cout<<empty[i+1]<<" ";
     // 在每个3*3内随机生成空格位置，置0
     int tmp, i, j;
     for (int k = 1; k <= 9; k++) {
