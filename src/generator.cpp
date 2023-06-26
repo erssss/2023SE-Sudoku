@@ -1,13 +1,13 @@
 #include "generator.h"
-#include <cassert>
+#include "solution.h"
 #include <algorithm>
+#include <cassert>
 #include <cstdio>
 #include <cstring>
 #include <ctime>
 #include <fstream>
 #include <iostream>
 #include <string>
-#include "solution.h"
 
 int idx[] = {1, 4, 7};
 
@@ -106,6 +106,7 @@ void Generator::Getpuzzle() {
             tmp_chessboard[i][j] = chessboard[i][j];
         }
     }
+    int hole_num = rand() % hole_num_min + hole_num_max;
 
     // 随机生成每个3*3内空格数量
     // while (sum <= hole_num) {
@@ -120,44 +121,35 @@ void Generator::Getpuzzle() {
     //         sum += empty[i];
     //     }
     // }
-    
-	if (hardness == 1) {
-		while (sum <= hole_num) {
-			empty[1] += (rand() % 3); 
-			sum += empty[1];
-			for (int i = 2; i <= 9&&sum <= hole_num; i++) {
-                // std::cout<<sum<<"<<<<\n";
-				empty[i] += (rand() % 3 + 1);
-				sum += empty[i];
-			}
-		}
-	}
-	else if (hardness == 0) {
-		while (sum <= hole_num) {
-			empty[1] += rand() % 3;
-			sum += empty[1];
-			for (int i = 2; i <= 9&&sum <= hole_num; i++) {
-				empty[i] += rand() % 3;
-				sum += empty[i];
-			}
-		}
-	}
-	else if (hardness == 2) {
-		while (sum <= hole_num ) {
-			empty[1] += rand() % 5;
-			sum += empty[1];
-			for (int i = 2; i <= 9&&sum <= hole_num; i++) {
-				empty[i] += rand() % 6 + 2;
-				sum += empty[i];
-			}
-		}
-	}
-    else {
-        assert(0);
+
+    if (hardness == 0) {
+        hole_num = 20;
+    } else if (hardness == 1) {
+        hole_num = 35;
+    } else if (hardness == 2) {
+        hole_num = 55;
     }
 
+    while (sum <= hole_num) {
+        empty[1] += (rand() % 3 + 1);
+        sum += empty[1];
+        for (int i = 1; i <= 9 && sum <= hole_num; i++) {
+            // std::cout<<sum<<"<<<<\n";
+            if (empty[i - 1] >= 5)
+                empty[i] += (rand() % 3);
+            else
+                empty[i] += (rand() % 3 + 1);
+            sum += empty[i];
+        }
+    }
+
+    while (sum > hole_num) {
+        int idx = rand() % 9 + 1;
+        empty[idx]--;
+        sum--;
+    }
     // for(int i=0;i<9;i++)
-        // std::cout<<empty[i+1]<<" ";
+    // std::cout<<empty[i+1]<<" ";
     // 在每个3*3内随机生成空格位置，置0
     int tmp, i, j;
     for (int k = 1; k <= 9; k++) {
@@ -170,10 +162,10 @@ void Generator::Getpuzzle() {
                 tmp_chessboard[i][j] = '0';
                 puzzle.load(tmp_chessboard);
                 puzzle.InitBoard();
-                
-                if(is_unique&&!puzzle.Solution()){
+
+                if (is_unique && !puzzle.Solution()) {
                     // std::cout<<"unique check\n";
-                    tmp_chessboard[i][j]=ch;
+                    tmp_chessboard[i][j] = ch;
                     continue;
                 }
 

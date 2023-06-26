@@ -72,16 +72,17 @@ int main(int argc, char **argv) {
 
     int ch;
     int type = 0;
-	int counts = 0;
-	bool is_puzzle = 0;
-	bool is_unique = 0;
-	int hole_num = 30;
-	int hardness = 0;
-	string path="";
-	string c = "f:t:m:n:d:u:h";
-	char charArray[16];
-	strcpy(charArray, c.c_str());
-	std::srand(std::time(nullptr));
+    int counts = 1;
+    bool is_puzzle = 0;
+    bool is_unique = 0;
+    int hole_num_min = 20;
+    int hole_num_max = 50;
+    int hardness = -1;
+    string path = "";
+    string c = "f:t:m:n:d:x:u:h";
+    char charArray[16];
+    strcpy(charArray, c.c_str());
+    std::srand(std::time(nullptr));
 
     while ((ch = getopt(argc, argv, charArray)) != -1) {
         switch (ch) {
@@ -91,58 +92,60 @@ int main(int argc, char **argv) {
         case 't':
             type = atoll(optarg);
             break;
-		// case 'p':
-		// 	is_puzzle = 1;
-        //     break;
-		case 'u':
-			is_unique = 1;
+            // case 'p':
+            // 	is_puzzle = 1;
+            //     break;
+        case 'u':
+            is_unique = 1;
             break;
-		case 'n':
-			counts = atoll(optarg);
+        case 'n':
+            std::cout<<atoll(optarg)<<"\n";
+            counts = atoll(optarg);
             break;
-		case 'd':
-			hole_num = atoll(optarg);
+        case 'd':
+            hole_num_min = atoll(optarg);
             break;
-		case 'm':
-			hardness = atoll(optarg);
+        case 'x':
+            hole_num_max = atoll(optarg);
+            break;
+        case 'm':
+            hardness = atoll(optarg);
             break;
         case 'h':
-            std::cout<<"【操作提示】:\n";
-            std::cout<<"\t-f | 文件路径\n";
-            std::cout<<"\t-t | 创建数独终局/创建数独谜题/求解数独[0/1/2] \n";
-            std::cout<<"\t-m | 创建数独难度\n";
-            std::cout<<"\t-n | 创建数独数量\n";
-            std::cout<<"\t-d | 数独填空数目区间\n";
-            std::cout<<"\t-u | 创建数独解唯一\n";
-            std::cout<<"\t-h | 操作提示\n";
+            std::cout << "【操作提示】:\n";
+            std::cout << "\t-f | 文件路径\n";
+            std::cout << "\t-t | 创建数独终局/创建数独谜题/求解数独[0/1/2] \n";
+            std::cout << "\t-m | 创建数独难度\n";
+            std::cout << "\t-n | 创建数独数量\n";
+            std::cout << "\t-d | 数独填空数目区间\n";
+            std::cout << "\t-u | 创建数独解唯一\n";
+            std::cout << "\t-h | 操作提示\n";
             return 0;
         default:
             break;
         }
     }
 
-
-	if(hardness>2||hardness<0){
-		std::cout<<"请输入正确的难度！\n";
-		return 1;
-	}
-
-
-	if(is_puzzle){
-        std::cout<<"puzzle!\n";
+    if (hardness!=-1&&(hardness > 2 || hardness < 0)) {
+        std::cout << "请输入正确的难度！\n";
+        return 1;
     }
-	if(type==2)
-		solve_sudoku(path);
-	else if(type==1){
-		is_puzzle = 1;
-		std::cout<<"is unique = "<<is_unique<<"\n";
-		create_sudoku(path,is_puzzle,is_unique,hole_num,hardness,counts);
-	}
-	else if(type==0)
-		create_sudoku(path,is_puzzle,is_unique,hole_num,hardness,counts);
-	else{
-		std::cout<<"请输入正确的类型！\n";
-	}
+
+    if (is_puzzle) {
+        std::cout << "puzzle!\n";
+    }
+    if (type == 2)
+        solve_sudoku(path);
+    else if (type == 1) {
+        is_puzzle = 1;
+        std::cout << "is unique = " << is_unique << "\n";
+        create_sudoku(path, is_puzzle, is_unique, hole_num_min, hole_num_max,
+                      hardness, counts);
+    } else if (type == 0)
+        create_sudoku(path, is_puzzle, counts=counts);
+    else {
+        std::cout << "请输入正确的类型！\n";
+    }
     // work(type,input_path,is_puzzle);
     // work(argv);
 

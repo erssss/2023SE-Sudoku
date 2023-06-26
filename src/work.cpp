@@ -32,19 +32,20 @@ int str2int(char *s) {
     return x;
 }
 
-void create_sudoku(string path, bool is_puzzle, bool is_unique, int hole_num,
-                   int hardness, int counts) {
+void create_sudoku(string path, bool is_puzzle, bool is_unique,
+                   int hole_num_min, int hole_num_max, int hardness,
+                   int counts) {
     if (counts > 0 && counts <= 100000) {
-            test_input_flag = 5;
-            Generator board(path,hole_num,hardness,counts,is_unique);
-			// std::cout<<"hardness = "<<board.hardness<<"\n";
-            board.Create(is_puzzle);
-			if(!is_puzzle)
-            	board.Output();
-			if(is_puzzle)
-				std::cout << "数独谜题生成成功\n";
-			else
-				std::cout << "数独终局生成成功\n";
+        test_input_flag = 5;
+        Generator board(path, hole_num_min,hole_num_max, hardness, counts, is_unique);
+        // std::cout<<"hardness = "<<board.hardness<<"\n";
+        board.Create(is_puzzle);
+        if (!is_puzzle)
+            board.Output();
+        if (is_puzzle)
+            std::cout << "数独谜题生成成功\n";
+        else
+            std::cout << "数独终局生成成功\n";
 
     } else {
         test_input_flag = 4; // 终局数量越界
