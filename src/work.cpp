@@ -73,3 +73,18 @@ void solve_sudoku(string path) {
     std::cout << ("数独求解成功\n");
     test_input_flag = 8; // 求解数独命令合法
 }
+
+
+void printSudokuBoard(int x,int board[SIZE][SIZE]) {
+    // 输出带有边框的棋盘
+    for (int i = 0; i < x + 2; i++) {
+        for (int j = 0; j < x + 2; j++) {
+            if (i == 0 || i == x + 1 || j == 0 || j == x + 1) {
+                std::cout << "- ";
+            } else {
+                std::cout << "| " << board[i][j] << " ";
+            }
+        }
+        std::cout << std::endl;
+    }
+}
