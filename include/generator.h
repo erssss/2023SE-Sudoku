@@ -22,19 +22,22 @@ class Generator {
                          bool is_puzzle); // 数独终局列交换
     void Getpuzzle();                     // 生成含空格的puzzle
   public:
+    char (&getChessboard())[SIZE][SIZE] { return chessboard; }
     void Create(bool is_puzzle);
     void Output();
     std::string path;
     int hardness;
     int hole_num_min;
     int hole_num_max;
-	bool is_unique;
+    bool is_unique;
     Generator(int n = 0) : num(n), out_cnt(0) {
         memset(chessboard, 0, sizeof(chessboard));
         out = NULL;
     }
-    Generator(string p, int hole_num_min = 20,int hole_num_max = 50, int hardness = -1, int n = 0,bool is_unique=0)
-        : num(n), hole_num_min(hole_num_min),hole_num_max(hole_num_max), hardness(hardness), out_cnt(0),is_unique(is_unique) {
+    Generator(string p, int hole_num_min = 20, int hole_num_max = 50,
+              int hardness = -1, int n = 0, bool is_unique = 0)
+        : num(n), hole_num_min(hole_num_min), hole_num_max(hole_num_max),
+          hardness(hardness), out_cnt(0), is_unique(is_unique) {
         memset(chessboard, 0, sizeof(chessboard));
         out = NULL;
         path = p;

@@ -159,7 +159,7 @@ void Generator::Getpuzzle() {
             j = idx[(k - 1) % 3] + (tmp - 1) % 3;
             if (tmp_chessboard[i][j]) {
                 char ch = tmp_chessboard[i][j];
-                tmp_chessboard[i][j] = '0';
+                tmp_chessboard[i][j] = '$';
                 puzzle.load(tmp_chessboard);
                 puzzle.InitBoard();
 

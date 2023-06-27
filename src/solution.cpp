@@ -2,11 +2,11 @@
 #include "solution.h"
 #include <algorithm>
 #include <cstdio>
+#include <cstring>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <malloc.h>
-#include <cstring>
 
 using namespace std;
 
@@ -17,7 +17,7 @@ bool Puzzle::Read(string path) {
     std::ifstream input_file(path);
 
     if (!input_file) {
-        std::cerr << "Failed to open the file.\n";
+        std::cerr << "[失败]读取文件失败\n";
         return 0;
     }
     string line;
@@ -26,26 +26,25 @@ bool Puzzle::Read(string path) {
 
     int board_size = line.length() / 2 + 1;
     read = new char[board_size * board_size];
-    out = new char[board_size * board_size*2];
+    out = new char[board_size * board_size * 2];
 
     char ch;
     int cnt = 0;
     while (input_file >> std::noskipws >> ch) {
         if (!std::isspace(ch)) {
             read[cnt++] = ch;
-        	// std::cout << ch; // 输出非空格字符
+            // std::cout << ch; // 输出非空格字符
         }
     }
     input_file.close();
     return true;
 }
 
-
 bool Puzzle::load(char mat[SIZE][SIZE]) {
     read = new char[SIZE * SIZE];
     out = new char[SIZE * SIZE * 2];
-	int cnt=0;
-	for (int i = 1; i <= 9; i++) {
+    int cnt = 0;
+    for (int i = 1; i <= 9; i++) {
         for (int j = 1; j <= 9; j++) {
             read[cnt++] = mat[i][j];
         }
@@ -53,7 +52,6 @@ bool Puzzle::load(char mat[SIZE][SIZE]) {
 
     return true;
 }
-
 
 void Puzzle::Init() {
     memset(column, 0, sizeof(column));
@@ -64,20 +62,20 @@ void Puzzle::Init() {
     empty_num = 0;
 }
 
-void Puzzle::PrintSolver(){
-	for (int i = 1; i <= 9; i++) {
+void Puzzle::PrintSolver() {
+    for (int i = 1; i <= 9; i++) {
         for (int j = 1; j <= 9; j++) {
-            std::cout<<puzzleboard[i][j];
+            std::cout << puzzleboard[i][j];
             if (j == 9)
-                std::cout<<'\n';
+                std::cout << '\n';
             else
-                std::cout<<' ';
+                std::cout << ' ';
         }
     }
 }
 
 void Puzzle::InitBoard() {
-	// PrintBoard();
+    // PrintBoard();
     int len = strlen(read);
     for (int ch = 0; ch < len;) { // 依次读取每一个字符
 
@@ -89,7 +87,7 @@ void Puzzle::InitBoard() {
                 puzzleboard[i][j] = read[ch];
 
                 int k = (i - 1) / 3 * 3 + (j - 1) / 3 + 1;
-                if (puzzleboard[i][j] == '0') {
+                if (puzzleboard[i][j] == '$') {
                     que.push(Node(i, j, k));
                     empty_num++;
                 } else {
@@ -113,7 +111,7 @@ void Puzzle::InitBoard() {
 }
 
 void Puzzle::GetBoard() {
-	out_cnt = 0;
+    out_cnt = 0;
     for (int i = 1; i <= 9; i++) {
         for (int j = 1; j <= 9; j++) {
             out[out_cnt++] = puzzleboard[i][j];
@@ -134,25 +132,25 @@ void Puzzle::PrintBoard() {
 void Puzzle::Output(string path) {
 
     // std::cout << "\nstart write " << out_cnt << "\n";
-	PrintSolver();
+    PrintSolver();
     // PrintBoard();
-	
-	std::cout<<"cnt = "<<out_cnt<<"\n";
-    std::ofstream solution_file("solved_"+path);  // 打开文件以写入模式
 
-	if (!solution_file) {
-	    std::cout << "创建数独求解文件失败\n";
-	    return;
-	}
-	solution_file.write(out, std::strlen(out));
+    std::cout << "cnt = " << out_cnt << "\n";
+    std::ofstream solution_file("solved_" + path); // 打开文件以写入模式
 
-	if (!solution_file) {
-        std::cout << "输出数独解失败\n";
+    if (!solution_file) {
+        std::cout << "[失败]创建数独求解文件失败\n";
+        return;
+    }
+    solution_file.write(out, std::strlen(out));
+
+    if (!solution_file) {
+        std::cout << "[失败]输出数独解失败\n";
     }
 
     delete[] read;
     delete[] out;
-	solution_file.close();
+    solution_file.close();
 }
 
 // 返回1的个数
@@ -205,7 +203,7 @@ bool Puzzle::dfs(int tmp, Node node[]) {
 
 bool Puzzle::Solution() {
     bool flag = true;
-	bool unique = true;
+    bool unique = true;
     Node tmp(-1, -1, -1);
     while (empty_num) {
         // 填写唯一解空格
@@ -240,7 +238,7 @@ bool Puzzle::Solution() {
         if (!empty_num)
             break;
         // 求出所有非唯一解空格可填的数字，dfs求解
-		unique=false;
+        unique = false;
         Node node[65];
         int cot = 0;
         while (!que.isEmpty()) {
@@ -260,8 +258,8 @@ bool Puzzle::Solution() {
         std::sort(node + 1, node + cot + 1);
         if (!dfs(1, node)) {
             // std::cout << ("有不合法数独\n");
-			return 0;
+            return 0;
         }
     }
-	return unique;
+    return unique;
 }

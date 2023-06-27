@@ -162,6 +162,7 @@ bool processArgs(int argc, char *argv[]) {
                 return 0;
             }
         }
+        path = "puzzle.txt";
         is_puzzle = 1;
         create_sudoku(path, is_puzzle, is_unique, hole_num_min, hole_num_max,
                       hardness, counts);
