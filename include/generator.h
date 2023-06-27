@@ -1,27 +1,32 @@
-#ifndef __GENERATOR_H__
-#define __GENERATOR_H__
+// Copyright 2023 SE zjy&cry
+
+#ifndef INCLUDE_GENERATOR_H_
+#define INCLUDE_GENERATOR_H_
 #include <cstring>
 #include <string>
-
-using namespace std;
+#include <iostream>
+using std::__cxx11::stoi;
+using std::cout;
+using std::string;
 #define SIZE 10
 
 class Generator {
-  private:
-    char chessboard[SIZE][SIZE]; // 数独终局盘
+ private:
+    char chessboard[SIZE][SIZE];  // 数独终局盘
     char *out;
     int out_cnt;
-    int num; // 数独终局数量
-    // 数独模板
+    int num;  // 数独终局数量
+     // 数独模板
     char modle[11][11] = {
         "0",          "0abcdefghi", "0defghiabc", "0ghiabcdef", "0bcaefdhig",
         "0efdhigbca", "0higbcaefd", "0cabfdeigh", "0fdeighcab", "0ighcabfde"};
     void Getchessboard(int ord[SIZE], char firstrow[SIZE],
-                       bool is_puzzle); // 数独终局输出
+                       bool is_puzzle);  // 数独终局输出
     bool Create_exchange(int ord[SIZE], char firstrow[SIZE],
-                         bool is_puzzle); // 数独终局列交换
-    void Getpuzzle();                     // 生成含空格的puzzle
-  public:
+                         bool is_puzzle);  // 数独终局列交换
+    void Getpuzzle();                      // 生成含空格的puzzle
+
+ public:
     char (&getChessboard())[SIZE][SIZE] { return chessboard; }
     void Create(bool is_puzzle);
     void Output();
@@ -30,7 +35,7 @@ class Generator {
     int hole_num_min;
     int hole_num_max;
     bool is_unique;
-    Generator(int n = 0) : num(n), out_cnt(0) {
+    explicit Generator(int n = 0) : num(n), out_cnt(0) {
         memset(chessboard, 0, sizeof(chessboard));
         out = NULL;
     }
@@ -44,4 +49,4 @@ class Generator {
     }
 };
 
-#endif // !__GENERATOR_H__
+#endif  // INCLUDE_GENERATOR_H_

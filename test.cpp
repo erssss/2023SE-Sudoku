@@ -2,7 +2,8 @@
 #include <fstream>
 #include <cctype>
 
-using namespace std;
+using std::cout;
+using std::string;
 
 int main() {
     std::ifstream file("sudoku.txt");  // 打开文件 example.txt

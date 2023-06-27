@@ -1,7 +1,9 @@
-#include "work.h"
-#include "generator.h"
-#include "solution.h"
+// Copyright 2023 SE zjy&cry
+
 #include <cstring>
+#include "../include/solver.h"
+#include "../include/generator.h"
+#include "../include/controller.h"
 
 FILE *puzzle_fp = NULL;
 FILE *generator_fp = NULL;
@@ -9,7 +11,9 @@ FILE *solution_fp = NULL;
 
 int test_input_flag = 0;
 
-using namespace std;
+using std::__cxx11::stoi;
+using std::cout;
+using std::string;
 
 
 void create_sudoku(string path, bool is_puzzle, bool is_unique,
@@ -46,14 +50,14 @@ void solve_sudoku(string path, int counts) {
     Puzzle puzzle;
     if (!puzzle.Read(path)) {
         std::cout << ("[错误]求解数独文件路径不合法\n");
-        test_input_flag = 7; // 求解数独文件路径不合法
+        test_input_flag = 7;  // 求解数独文件路径不合法
         return;
     }
     puzzle.InitBoard();
     puzzle.Output(path);
     fclose(solution_fp);
     std::cout << "[成功]数独求解成功\n";
-    test_input_flag = 8; // 求解数独命令合法
+    test_input_flag = 8;  // 求解数独命令合法
 }
 
 void printSudokuBoard(int x, char board[SIZE][SIZE]) {

@@ -1,18 +1,23 @@
-#ifndef __SOLUTION_H__
-#define __SOLUTION_H__
+// Copyright 2023 SE zjy&cry
+#ifndef INCLUDE_SOLVER_H_
+#define INCLUDE_SOLVER_H_
 #include <cstring>
+#include <string>
 #include <iostream>
+
 #define SIZE 10
-using namespace std;
+using std::__cxx11::stoi;
+using std::cout;
+using std::string;
 
 template <class T> class Queue {
-  protected:
+ protected:
     T *element;
     int head, rear;
     int maxSize;
 
-  public:
-    Queue(int sz = 65) {
+ public:
+      explicit Queue(int sz = 65) {
         head = rear = 0;
         maxSize = sz;
         element = new T[maxSize];
@@ -29,19 +34,18 @@ template <class T> class Queue {
 };
 
 class Puzzle {
-  private:
-    int column[SIZE], row[SIZE], sub[SIZE]; // 判断合法
-    int empty_num;                          // 剩余空的数量
-    char *read;                             // 求解读入缓存
-    char *out;                              // 输出缓存
+ private:
+    int column[SIZE], row[SIZE], sub[SIZE];  // 判断合法
+    int empty_num;                           // 剩余空的数量
+    char *read;                              // 求解读入缓存
+    char *out;                               // 输出缓存
     int out_cnt;
     int read_cnt;
-    class Node { // 空格位置
-      private:
-      public:
-        int r, c, k;     // 空格位置的行、列、宫
-        int maybe[SIZE]; // 空格位置可以填的数
-        int maybe_num;   // 空格位置可以填的数的数量
+    class Node {  // 空格位置
+     public:
+        int r, c, k;      // 空格位置的行、列、宫
+        int maybe[SIZE];  // 空格位置可以填的数
+        int maybe_num;    // 空格位置可以填的数的数量
         Node(int _r, int _c, int _k, int _maybe_num = 0)
             : r(_r), c(_c), k(_k), maybe_num(_maybe_num) {
             memset(maybe, 0, sizeof(maybe));
@@ -56,17 +60,17 @@ class Puzzle {
             return maybe_num < x.maybe_num;
         }
     };
-    Queue<Node> que; // 求解显性+隐性唯一解的空格队列
+    Queue<Node> que;  // 求解显性+隐性唯一解的空格队列
 
-  public:
+ public:
     void PrintBoard();
-    char puzzleboard[SIZE][SIZE]; // 数独求解盘
+    char puzzleboard[SIZE][SIZE];  // 数独求解盘
     void InitBoard();
     void Output(string psth);
     bool Read(string path);
     bool load(char mat[SIZE][SIZE]);
     void PrintSolver();
-    bool Solution(); // 数独求解 1.唯一解填充 2.dfs可行解
+    bool Solution();  // 数独求解 1.唯一解填充 2.dfs可行解
     void Init();
     bool dfs(int tmp, Node node[]);
     void GetBoard();
@@ -80,4 +84,4 @@ class Puzzle {
     }
 };
 
-#endif // !__SOLUTION_H__
+#endif  // INCLUDE_SOLVER_H_

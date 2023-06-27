@@ -1,21 +1,27 @@
-#include "generator.h"
-#include "solution.h"
+// Copyright 2023 SE zjy&cry
+
 #include <algorithm>
 #include <cassert>
 #include <cstdio>
 #include <cstring>
 #include <ctime>
 #include <fstream>
+#include <cstdlib>
 #include <iostream>
+#include <random>
 #include <string>
+#include "../include/solver.h"
+#include "../include/generator.h"
 
 int idx[] = {1, 4, 7};
-
 extern FILE *puzzle_fp;
 extern FILE *generator_fp;
+std::random_device rd;
+std::mt19937 gen(rd());
+std::uniform_int_distribution<> dis(1, 6);
 
 void Generator::Output() {
-    std::ofstream generator_file(path); // 打开输出文件
+    std::ofstream generator_file(path);  // 打开输出文件
 
     if (!generator_file) {
         std::cout << "无法打开文件\n";
@@ -29,7 +35,7 @@ void Generator::Output() {
     }
 
     delete[] out;
-    generator_file.close(); // 关闭文件
+    generator_file.close();  // 关闭文件
 }
 
 void Generator::Getchessboard(int ord[], char firstrow[], bool is_puzzle) {
@@ -106,21 +112,21 @@ void Generator::Getpuzzle() {
             tmp_chessboard[i][j] = chessboard[i][j];
         }
     }
-    int hole_num = rand() % hole_num_min + hole_num_max;
+    int hole_num = dis(gen) % hole_num_min + hole_num_max;
 
-    // 随机生成每个3*3内空格数量
-    // while (sum <= hole_num) {
-    //     sum = 0;
-    //     empty[1] = rand() % 7 + 2; // 随机生成2~8
-    //     sum += empty[1];
-    //     for (int i = 2; i <= 9; i++) {
-    //         if (empty[i - 1] >= 5) // 上一个空格过多，生成2~4
-    //             empty[i] = rand() % 3 + 2;
-    //         else // 上一个空格过少，生成5~8
-    //             empty[i] = rand() % 4 + 5;
-    //         sum += empty[i];
-    //     }
-    // }
+     // 随机生成每个3*3内空格数量
+     // while (sum <= hole_num) {
+     //     sum = 0;
+     //     empty[1] = dis(gen) % 7 + 2;  // 随机生成2~8
+     //     sum += empty[1];
+     //     for (int i = 2; i <= 9; i++) {
+     //         if (empty[i - 1] >= 5)  // 上一个空格过多，生成2~4
+     //             empty[i] = dis(gen) % 3 + 2;
+     //         else  // 上一个空格过少，生成5~8
+     //             empty[i] = dis(gen) % 4 + 5;
+     //         sum += empty[i];
+     //     }
+     // }
 
     if (hardness == 0) {
         hole_num = 20;
@@ -131,30 +137,30 @@ void Generator::Getpuzzle() {
     }
 
     while (sum <= hole_num) {
-        empty[1] += (rand() % 3 + 1);
+        empty[1] += (dis(gen) % 3 + 1);
         sum += empty[1];
         for (int i = 1; i <= 9 && sum <= hole_num; i++) {
-            // std::cout<<sum<<"<<<<\n";
+             // std::cout<<sum<<"<<<<\n";
             if (empty[i - 1] >= 5)
-                empty[i] += (rand() % 3);
+                empty[i] += (dis(gen) % 3);
             else
-                empty[i] += (rand() % 3 + 1);
+                empty[i] += (dis(gen) % 3 + 1);
             sum += empty[i];
         }
     }
 
     while (sum > hole_num) {
-        int idx = rand() % 9 + 1;
+        int idx = dis(gen) % 9 + 1;
         empty[idx]--;
         sum--;
     }
-    // for(int i=0;i<9;i++)
-    // std::cout<<empty[i+1]<<" ";
-    // 在每个3*3内随机生成空格位置，置0
+     // for(int i=0;i<9;i++)
+     // std::cout<<empty[i+1]<<" ";
+     // 在每个3*3内随机生成空格位置，置0
     int tmp, i, j;
     for (int k = 1; k <= 9; k++) {
         while (empty[k]) {
-            tmp = rand() % 9 + 1;
+            tmp = dis(gen) % 9 + 1;
             i = idx[(k - 1) / 3] + (tmp - 1) / 3;
             j = idx[(k - 1) % 3] + (tmp - 1) % 3;
             if (tmp_chessboard[i][j]) {
@@ -164,7 +170,7 @@ void Generator::Getpuzzle() {
                 puzzle.InitBoard();
 
                 if (is_unique && !puzzle.Solution()) {
-                    // std::cout<<"unique check\n";
+                     // std::cout<<"unique check\n";
                     tmp_chessboard[i][j] = ch;
                     continue;
                 }
@@ -175,7 +181,7 @@ void Generator::Getpuzzle() {
     }
     std::ofstream puzzle_file(path, std::ios::app);
 
-    // 输出quzzle到文件
+     // 输出quzzle到文件
     for (int i = 1; i <= 9; i++) {
         for (int j = 1; j <= 9; j++) {
             puzzle_file << tmp_chessboard[i][j];

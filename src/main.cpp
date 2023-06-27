@@ -1,72 +1,73 @@
-#include "work.h"
-#include <iomanip>
-using namespace std;
+// Copyright 2023 SE zjy&cry
 
+#include <iomanip>
+#include "../include/controller.h"
+
+using std::__cxx11::stoi;
+using std::cout;
+using std::string;
 char *optarg = NULL;
 int optind = 1;
 int opterr = 1;
-#define _next_char(string) (char)(*(string + 1))
+#define _next_char(string) static_cast<char>(*(string + 1));
 
-int getopt(int argc, char *argv[], char *opstring) {
-    static char *pIndexPosition = NULL;
-    char *pArgString = NULL;
-    char *pOptString;
+// int getopt(int argc, char *argv[], char *opstring) {
+//     static char *pIndexPosition = NULL;
+//     char *pArgString = NULL;
+//     char *pOptString;
 
-    if (pIndexPosition != NULL) {
-        if (*(++pIndexPosition)) {
-            pArgString = pIndexPosition;
-        }
-    }
+//     if (pIndexPosition != NULL) {
+//         if (*(++pIndexPosition)) {
+//             pArgString = pIndexPosition;
+//         }
+//     }
 
-    if (pArgString == NULL) {
-        if (optind >= argc) {
-            pIndexPosition = NULL;
-            return EOF;
-        }
-
-        pArgString = argv[optind++];
-
-        if (('/' != *pArgString) && ('-' != *pArgString)) {
-            --optind;
-            optarg = NULL;
-            pIndexPosition = NULL;
-            return EOF;
-        }
-
-        if ((strcmp(pArgString, "-") == 0) || (strcmp(pArgString, "--") == 0)) {
-            optarg = NULL;
-            pIndexPosition = NULL;
-            return EOF;
-        }
-        pArgString++;
-    }
-
-    if (':' == *pArgString) {
-        return (opterr ? (int)'?' : (int)':');
-    } else if ((pOptString = strchr(opstring, *pArgString)) == 0) {
-        optarg = NULL;
-        pIndexPosition = NULL;
-        return (opterr ? (int)'?' : (int)*pArgString);
-    } else {
-        if (':' == _next_char(pOptString)) {
-            if ('\0' != _next_char(pArgString)) {
-                optarg = &pArgString[1];
-            } else {
-                if (optind < argc)
-                    optarg = argv[optind++];
-                else {
-                    optarg = NULL;
-                    return (opterr ? (int)'?' : (int)*pArgString);
-                }
-            }
-            pIndexPosition = NULL;
-        } else {
-            optarg = NULL;
-            pIndexPosition = pArgString;
-        }
-        return (int)*pArgString;
-    }
-}
+//     if (pArgString == NULL) {
+//         if (optind >= argc) {
+//             pIndexPosition = NULL;
+//             return EOF;
+//         }
+//         pArgString = argv[optind++];
+//         if (('/' != *pArgString) && ('-' != *pArgString)) {
+//             --optind;
+//             optarg = NULL;
+//             pIndexPosition = NULL;
+//             return EOF;
+//         }
+//         if ((strcmp(pArgString, "-") == 0) ||
+//                (strcmp(pArgString, "--") == 0)) {
+//             optarg = NULL;
+//             pIndexPosition = NULL;
+//             return EOF;
+//         }
+//         pArgString++;
+//     }
+//     if (':' == *pArgString) {
+//         return (opterr ? (int)'?' : (int)':');
+//     } else if ((pOptString = strchr(opstring, *pArgString)) == 0) {
+//         optarg = NULL;
+//         pIndexPosition = NULL;
+//         return (opterr ? (int)'?' : (int)*pArgString);
+//     } else {
+//         if (':' == _next_char(pOptString)) {
+//             if ('\0' != _next_char(pArgString)) {
+//                 optarg = &pArgString[1];
+//             } else {
+//                 if (optind < argc)
+//                     optarg = argv[optind++];
+//                 else {
+//                     optarg = NULL;
+//                     return (opterr ? (int)'?' : (int)*pArgString);
+//                 }
+//             }
+//             pIndexPosition = NULL;
+//         } else {
+//             optarg = NULL;
+//             pIndexPosition = pArgString;
+//         }
+//         return (int)*pArgString;
+//     }
+// }
 
 int type = 0;
 int counts = 1;
@@ -75,9 +76,9 @@ bool is_unique = 0;
 int hole_num_min = 20;
 int hole_num_max = 50;
 int hardness = -1;
-string path = "";
-string arg = "";
 bool processArgs(int argc, char *argv[]) {
+    std::string path = "";
+    std::string arg = "";
     arg = argv[1];
     if (arg == "-s") {
         if (argc == 3) {
@@ -134,20 +135,21 @@ bool processArgs(int argc, char *argv[]) {
             } else if (arg == "-r") {
                 if (i + 1 >= argc) {
                     std::cout
-                        << "[错误]请按照正确的格式输入: -c <counts> -m "
+                        << "[错误]请按照正确的格式输入: -n <counts> -m "
                            "<hardness> -r <hole_num_min ~ hole_num_max> \n";
                     return 0;
                 }
-                std::string range = argv[i];
-                size_t rangePos = range.find("~");
-                if (rangePos == string::npos) {
+                std::string range = argv[++i];
+                size_t marker = range.find("~");
+                // std::cout<<marker<<"\n";
+                if (marker >= range.length()) {
                     std::cout
-                        << "[错误]请按照正确的格式输入: -c <counts> -m "
+                        << "[错误]请按照正确的格式输入: -n <counts> -m "
                            "<hardness> -r <hole_num_min ~ hole_num_max> \n";
                     return 0;
                 }
-                hole_num_min = stoi(range.substr(0, rangePos));
-                hole_num_max = stoi(range.substr(rangePos + 1));
+                hole_num_min = stoi(range.substr(0, marker));
+                hole_num_max = stoi(range.substr(marker + 1));
                 if (!(hole_num_max <= 55 && hole_num_max >= 20) ||
                     !(hole_num_min <= 55 && hole_num_min >= 20) ||
                     hole_num_min > hole_num_max) {
@@ -171,7 +173,6 @@ bool processArgs(int argc, char *argv[]) {
 }
 
 int main(int argc, char **argv) {
-
     // ******************* 雨课堂改版控制台参数 *******************
 
     processArgs(argc, argv);
@@ -199,9 +200,6 @@ int main(int argc, char **argv) {
     //     case 't':
     //         type = atoll(optarg);
     //         break;
-    //         // case 'p':
-    //         // 	is_puzzle = 1;
-    //         //     break;
     //     case 'u':
     //         is_unique = 1;
     //         break;

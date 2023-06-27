@@ -1,19 +1,20 @@
+// Copyright 2023 SE zjy&cry
 
-#include "solution.h"
+#include "../include/solver.h"
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <malloc.h>
 
-using namespace std;
+using std::cout;
+using std::string;
+using std::__cxx11::stoi;
 
 extern FILE *solution_fp;
 
 bool Puzzle::Read(string path) {
-
     std::ifstream input_file(path);
 
     if (!input_file) {
@@ -22,7 +23,7 @@ bool Puzzle::Read(string path) {
     }
     string line;
     std::getline(input_file, line);
-    input_file.seekg(0, std::ios::beg); // 将文件指针定位到文件开头
+    input_file.seekg(0, std::ios::beg);  // 将文件指针定位到文件开头
 
     int board_size = line.length() / 2 + 1;
     read = new char[board_size * board_size];
@@ -33,7 +34,7 @@ bool Puzzle::Read(string path) {
     while (input_file >> std::noskipws >> ch) {
         if (!std::isspace(ch)) {
             read[cnt++] = ch;
-            // std::cout << ch; // 输出非空格字符
+             // std::cout << ch;   // 输出非空格字符
         }
     }
     input_file.close();
@@ -75,13 +76,11 @@ void Puzzle::PrintSolver() {
 }
 
 void Puzzle::InitBoard() {
-    // PrintBoard();
+     // PrintBoard();
     int len = strlen(read);
-    for (int ch = 0; ch < len;) { // 依次读取每一个字符
-
+    for (int ch = 0; ch < len;) {  // 依次读取每一个字符
         Init();
-
-        // 读入一个数独
+         // 读入一个数独
         for (int i = 1; i <= 9; i++) {
             for (int j = 1; j <= 9; j++) {
                 puzzleboard[i][j] = read[ch];
@@ -98,11 +97,11 @@ void Puzzle::InitBoard() {
                 }
 
                 ch++;
-                // while (!(read[ch] >= '0' && read[ch] <= '9') && ch < len)
-                //     ch++;
+                 // while (!(read[ch] >= '0' && read[ch] <= '9') && ch < len)
+                 //     ch++;
             }
         }
-        // 求解当前数独
+         // 求解当前数独
         Solution();
         GetBoard();
         if (ch < len)
@@ -130,13 +129,11 @@ void Puzzle::PrintBoard() {
 }
 
 void Puzzle::Output(string path) {
-
-    // std::cout << "\nstart write " << out_cnt << "\n";
+     // std::cout << "\nstart write " << out_cnt << "\n";
     PrintSolver();
-    // PrintBoard();
-
+     // PrintBoard();
     std::cout << "cnt = " << out_cnt << "\n";
-    std::ofstream solution_file("solved_" + path); // 打开文件以写入模式
+    std::ofstream solution_file("solved_" + path);  // 打开文件以写入模式
 
     if (!solution_file) {
         std::cout << "[失败]创建数独求解文件失败\n";
@@ -206,30 +203,30 @@ bool Puzzle::Solution() {
     bool unique = true;
     Node tmp(-1, -1, -1);
     while (empty_num) {
-        // 填写唯一解空格
+         // 填写唯一解空格
         while (!que.isEmpty()) {
             tmp = que.front();
             que.pop();
 
-            if (tmp.k == 0) { // 一轮标记
+            if (tmp.k == 0) {  // 一轮标记
                 if (flag) {
                     flag = false;
                     que.push(tmp);
-                } else
-                    break; // 无唯一确定方格
+                } else {
+                    break;  // 无唯一确定方格
+                }
             } else {
                 int result = row[tmp.r] | column[tmp.c] | sub[tmp.k];
-                if (Num1(result) == 8) { // 找到一个唯一确定方格
+                if (Num1(result) == 8) {  // 找到一个唯一确定方格
                     int sure_num = getNum(result);
                     int shift = sure_num - 1;
                     puzzleboard[tmp.r][tmp.c] = sure_num + '0';
-
                     flag = true;
                     empty_num--;
                     column[tmp.c] |= 1 << shift;
                     row[tmp.r] |= 1 << shift;
                     sub[tmp.k] |= 1 << shift;
-                } else { // 重新加入队列
+                } else {  // 重新加入队列
                     que.push(tmp);
                 }
             }
@@ -237,7 +234,7 @@ bool Puzzle::Solution() {
 
         if (!empty_num)
             break;
-        // 求出所有非唯一解空格可填的数字，dfs求解
+         // 求出所有非唯一解空格可填的数字，dfs求解
         unique = false;
         Node node[65];
         int cot = 0;
@@ -257,7 +254,7 @@ bool Puzzle::Solution() {
         }
         std::sort(node + 1, node + cot + 1);
         if (!dfs(1, node)) {
-            // std::cout << ("有不合法数独\n");
+             // std::cout << ("有不合法数独\n");
             return 0;
         }
     }

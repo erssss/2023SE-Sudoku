@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = 
+CFLAGS = -Wall -std=gnu++11
 
 SRCDIR = src
 INCDIR = include
