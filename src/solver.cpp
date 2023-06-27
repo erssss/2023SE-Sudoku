@@ -14,16 +14,25 @@ using std::__cxx11::stoi;
 
 extern FILE *solution_fp;
 
-bool Puzzle::Read(string path) {
+bool Puzzle::Read(string path,int start) {
     std::ifstream input_file(path);
 
     if (!input_file) {
-        std::cerr << "[失败]读取文件失败\n";
+        std::cerr << "[错误]读取文件失败\n";
         return 0;
     }
     string line;
     std::getline(input_file, line);
     input_file.seekg(0, std::ios::beg);  // 将文件指针定位到文件开头
+
+    int currentLine = 0;
+    while(currentLine < start&&std::getline(input_file, line)) {
+            currentLine++;
+        }
+    if (currentLine != start) {
+        std::cerr << "[错误]输入文件不完整\n";
+        return 0;
+    }
 
     int board_size = line.length() / 2 + 1;
     read = new char[board_size * board_size];
@@ -31,7 +40,9 @@ bool Puzzle::Read(string path) {
 
     char ch;
     int cnt = 0;
-    while (input_file >> std::noskipws >> ch) {
+    int readlines = 0;
+    while (readlines<SIZE && input_file >> std::noskipws >> ch ) {
+        if(ch=='\n')readlines++;
         if (!std::isspace(ch)) {
             read[cnt++] = ch;
              // std::cout << ch;   // 输出非空格字符
@@ -132,7 +143,7 @@ void Puzzle::Output(string path) {
      // std::cout << "\nstart write " << out_cnt << "\n";
     PrintSolver();
      // PrintBoard();
-    std::cout << "cnt = " << out_cnt << "\n";
+    // std::cout << "cnt = " << out_cnt << "\n";
     std::ofstream solution_file("solved_" + path);  // 打开文件以写入模式
 
     if (!solution_file) {

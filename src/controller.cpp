@@ -47,17 +47,19 @@ void solve_sudoku(string path, int counts) {
     // }
 
     std::cout << "input_path = " << path << "\n";
-    Puzzle puzzle;
-    if (!puzzle.Read(path)) {
-        std::cout << ("[错误]求解数独文件路径不合法\n");
-        test_input_flag = 7;  // 求解数独文件路径不合法
-        return;
+    for(int i = 0;i<counts;i++){
+        Puzzle puzzle;
+        if (!puzzle.Read(path,i*SIZE)) {
+            std::cout << ("[错误]求解数独文件路径不合法\n");
+            test_input_flag = 7;  // 求解数独文件路径不合法
+            return;
+        }
+        puzzle.InitBoard();
+        puzzle.Output(path);
+        fclose(solution_fp);
+        std::cout << "[成功]数独求解成功\n";
+        test_input_flag = 8;  // 求解数独命令合法
     }
-    puzzle.InitBoard();
-    puzzle.Output(path);
-    fclose(solution_fp);
-    std::cout << "[成功]数独求解成功\n";
-    test_input_flag = 8;  // 求解数独命令合法
 }
 
 void printSudokuBoard(int x, char board[SIZE][SIZE]) {
@@ -65,7 +67,7 @@ void printSudokuBoard(int x, char board[SIZE][SIZE]) {
     for (int i = 0; i < x + 2; i++) {
         for (int j = 0; j < x + 2; j++) {
             if (i == 0 || i == x + 1 || j == 0 || j == x + 1) {
-                std::cout << "-- ";
+                std::cout << "————";
             } else {
                 std::cout << "| " << board[i][j] << " ";
             }
