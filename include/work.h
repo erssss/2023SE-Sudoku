@@ -28,6 +28,6 @@ int str2int(char *s);
 void create_sudoku(string path, bool is_puzzle=0, bool is_unique=0,
                    int hole_num_min=20, int hole_num_max=50, int hardness=1,
                    int counts=1);
-void solve_sudoku(string path);
+void solve_sudoku(string path,int counts=1);
 
 #endif //!__WORK_H_

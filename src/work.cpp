@@ -53,7 +53,7 @@ void create_sudoku(string path, bool is_puzzle, bool is_unique,
     }
 }
 
-void solve_sudoku(string path) {
+void solve_sudoku(string path,int counts) {
     if (path == "") {
         test_input_flag = 6; // 没有输入求解数独文件路径
         std::cout << ("请输入数独文件\n");
