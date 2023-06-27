@@ -143,7 +143,7 @@ void Puzzle::Output(string path) {
      // std::cout << "\nstart write " << out_cnt << "\n";
     PrintSolver();
      // PrintBoard();
-    // std::cout << "cnt = " << out_cnt << "\n";
+    std::cout << "cnt = " << out_cnt << "\n";
     std::ofstream solution_file("solved_" + path);  // 打开文件以写入模式
 
     if (!solution_file) {
