@@ -53,5 +53,42 @@ class Key {
     void setCurValue(int curValue) { curVal = curValue; }
 };
 
+// 数独块
+class Block {
+    int counts;
+    p_with_v *_numbers[9];
+  public:
+    Block() : counts(0) {};
+    bool isValid() const;
+    bool isFull() const;
+    void print() const;
+};
+
+// 画布
+class Frame {
+
+    KeyMap *keyMap = new KeyMap();
+    int _max_column;
+    point_t cur_point;
+    Block rblock[9];
+    Block cblock[9];
+    Block ablock[3][3];
+    p_with_v myMap[81];
+    std::vector<Key> commander;
+    void init();
+    void setValue(const int);
+    void setValue(const point_t &, const int);
+    void printLine(int line_no = -1) const;
+
+  public:
+    Frame(int index = 3);
+    virtual ~Frame();
+
+    void show() const;
+    bool setPointValue(const point_t &, const int);
+    bool setCurValue(const int nCurValue, int &nLastValue);
+    void load(const char *filename);
+    void play();
+};
 
 #endif
