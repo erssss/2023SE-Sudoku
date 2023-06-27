@@ -2,7 +2,7 @@
 
 #include <iomanip>
 #include "../include/controller.h"
-#include "fitter.h"
+#include "../include/fitter.h"
 
 using std::cout;
 using std::string;

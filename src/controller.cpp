@@ -19,8 +19,7 @@ using std::string;
 void create_sudoku(string path, bool is_puzzle, bool is_unique,
                    int hole_num_min, int hole_num_max, int hardness,
                    int counts) {
-    // if (counts > 0 && counts <= 100000) {
-    // test_input_flag = 5;
+
     Generator board(path, hole_num_min, hole_num_max, hardness, counts,
                     is_unique);
     // std::cout<<"hardness = "<<board.hardness<<"\n";
@@ -33,18 +32,9 @@ void create_sudoku(string path, bool is_puzzle, bool is_unique,
     else
         std::cout << "[成功]数独终局生成成功\n";
 
-    // } else {
-    //     test_input_flag = 4; // 终局数量越界
-    //     std::cout << ("请输入正确的数量，范围是1~100000\n");
-    // }
 }
 
 void solve_sudoku(string path, int counts) {
-    // if (path == "") {
-    //     test_input_flag = 6; // 没有输入求解数独文件路径
-    //     std::cout << ("请输入数独文件\n");
-    //     return;
-    // }
 
     std::cout << "input_path = " << path << "\n";
     for(int i = 0;i<counts;i++){

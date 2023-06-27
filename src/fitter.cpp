@@ -1,4 +1,7 @@
 ﻿
+// Copyright 2023 SE zjy&cry
+
+#include "../include/fitter.h"
 #include <cassert>
 #include <cmath>
 #include <conio.h>
@@ -7,10 +10,9 @@
 #include <fstream>
 #include <iostream>
 #include <map>
-#include <memory.h>
+#include <memory>
 #include <unordered_map>
 #include <vector>
-#include "fitter.h"
 
 Key::Key(Frame *pview, const point_t &point, int preValue, int curValue)
     : view(pview), settedP(point), preVal(preValue), curVal(curValue) {}
@@ -24,7 +26,7 @@ bool Key::execute(int nInputValue) {
         return false;
 
     settedP = view->getCurPoint();
-    return view->setCurValue(nInputValue, preVal);
+    return view->setCurValue(nInputValue, &preVal);
 }
 
 void Key::undo() {
@@ -62,9 +64,10 @@ void Block::print() const {
     std::cout << "\u2503 ";
     for (int i = 0; i < counts; ++i) {
         auto number = *(_numbers[i]);
-        if (0 == number.value)
+        if (0 == number.value) {
             std::cout << ' ' << " \u2503 ";
-        else {
+
+        } else {
             if (number.state == ERASED)
                 std::cout << "\033[" << 1 << ";" << 91 << "m" << number.value
                           << "\033[" << 0 << "m"
@@ -76,9 +79,7 @@ void Block::print() const {
     std::cout << "\n";
 }
 
-void Block::push_back(p_with_v *point) {
-    _numbers[counts++] = point;
-}
+void Block::push_back(p_with_v *point) { _numbers[counts++] = point; }
 
 Frame::Frame(int index) : _max_column(index * index), cur_point({0, 0}) {
     init();
@@ -148,14 +149,15 @@ void Frame::init() {
     return;
 }
 
-bool Frame::setCurValue(const int value, int &lastValue) {
+bool Frame::setCurValue(int value, int *lastValue) {
     auto point = myMap[cur_point.x + cur_point.y * 9];
     if (point.state == ERASED) {
-        lastValue = point.value;
+        lastValue[0] = point.value;
         setValue(value);
         return true;
-    } else
+    } else {
         return false;
+    }
 }
 
 void Frame::setValue(const int value) {
@@ -165,7 +167,6 @@ void Frame::setValue(const int value) {
 void Frame::setValue(const point_t &p, const int value) {
     myMap[p.x + p.y * 9].value = value;
 }
-
 
 bool Frame::isComplete() {
     for (size_t i = 0; i < 81; ++i) {
@@ -182,8 +183,6 @@ bool Frame::isComplete() {
     return true;
 }
 
-
-
 void Frame::play() {
     show();
 
@@ -195,8 +194,7 @@ void Frame::play() {
             if (!comkeys.execute(key - '0')) {
                 std::cout << "这个数字不可修改\n";
             } else {
-                commander.push_back(
-                    std::move(comkeys)); // XXX: move without move constructor
+                commander.push_back(std::move(comkeys));
                 show();
                 continue;
             }
@@ -204,9 +202,9 @@ void Frame::play() {
         if (key == keyMap->ESC) {
             exit(0);
         } else if (key == keyMap->U) {
-            if (commander.empty())
+            if (commander.empty()) {
                 std::cout << "已达到撤回上限\n";
-            else {
+            } else {
                 Key &comkeys = commander.back();
                 comkeys.undo();
                 commander.pop_back();

@@ -1,5 +1,8 @@
-﻿#ifndef _FITTER_H_
-#define _FITTER_H_
+﻿
+// Copyright 2023 SE zjy&cry
+
+#ifndef INCLUDE_FITTER_H_
+#define INCLUDE_FITTER_H_
 
 #include <iostream>
 #include <memory>
@@ -37,8 +40,8 @@ using p_with_v = struct p_with_v {
 class Block {
     int counts;
     p_with_v *_numbers[9];
-  public:
-    Block() : counts(0) {};
+ public:
+    Block() : counts(0) {}
     bool isValid() const;
     bool isFull() const;
     void push_back(p_with_v *point);
@@ -51,11 +54,11 @@ class Key {
     point_t settedP;
     int preVal;
     int curVal;
-  public:
-    Key(Frame *pview) : view(pview) {};
+ public:
+    explicit Key(Frame *pview) : view(pview) {}
     Key(Frame *pview, const point_t &point, int preValue, int curValue);
     Key(const Key &);
-    ~Key(){};
+    ~Key() {}
 
     bool execute(int nInputValue);
     void undo();
@@ -70,7 +73,6 @@ class Key {
 
 // 画布
 class Frame {
-
     KeyMap *keyMap = new KeyMap();
     int _max_column;
     point_t cur_point;
@@ -84,13 +86,13 @@ class Frame {
     void setValue(const point_t &, const int);
     void printLine(int line_no = -1) const;
 
-  public:
-    Frame(int index = 3);
+ public:
+    explicit Frame(int index = 3);
     virtual ~Frame();
 
     void show() const;
     bool setPointValue(const point_t &, const int);
-    bool setCurValue(const int nCurValue, int &nLastValue);
+    bool setCurValue(int nCurValue, int* nLastValue);
     point_t getCurPoint() { return cur_point; }
     bool isComplete();
     void load(const char *filename);
@@ -98,5 +100,4 @@ class Frame {
 };
 
 
-
-#endif
+#endif  // INCLUDE_FITTER_H_
