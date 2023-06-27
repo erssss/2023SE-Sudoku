@@ -28,10 +28,10 @@ bool Key::execute(int nInputValue) {
 }
 
 void Key::undo() {
-//     if (view) {
-//         view->setPointValue(settedP, preVal);
-//     }
-//     return;
+    if (view) {
+        view->setPointValue(settedP, preVal);
+    }
+    return;
 }
 
 bool Block::isValid() const {
@@ -100,10 +100,20 @@ void Frame::show() const {
     }
 }
 
+void Frame::printLine(int line_no) const {
+    for (int colunm = 0; colunm < 9; ++colunm)
+        std::cout << "\u254B"
+                  << "\u2501"
+                  << ((cur_point.y == line_no && cur_point.x == colunm)
+                          ? "^"
+                          : "\u2501")
+                  << "\u2501";
+    std::cout << "\u254B"
+              << "\n";
+}
 
 void Frame::init() {
     memset(myMap, UNSELECTED, sizeof myMap);
-
     // 所有列
     for (int col = 0; col < _max_column; ++col) {
         Block column_block;
@@ -148,14 +158,14 @@ bool Frame::setCurValue(const int value, int &lastValue) {
         return false;
 }
 
-void Frame::setValue(const point_t &p, const int value) {
-    myMap[p.x + p.y * 9].value = value;
-}
-
 void Frame::setValue(const int value) {
     auto p = cur_point;
     this->setValue(p, value);
 }
+void Frame::setValue(const point_t &p, const int value) {
+    myMap[p.x + p.y * 9].value = value;
+}
+
 
 bool Frame::isComplete() {
     for (size_t i = 0; i < 81; ++i) {
@@ -172,26 +182,7 @@ bool Frame::isComplete() {
     return true;
 }
 
-void Frame::load(const char *filename) {
-    std::fstream fs;
-    fs.open(filename, std::fstream::in | std::fstream::out | std::fstream::app);
 
-    for (int i = 0; i < 81; i++) {
-        int tmpState;
-        char ch;
-        fs >> ch;
-        if (ch == '$') {
-            tmpState = 1;
-            myMap[i].value = 0;
-        } else {
-            tmpState = 0;
-            myMap[i].value = ch - '0';
-        }
-
-        myMap[i].state = tmpState;
-    }
-
-}
 
 void Frame::play() {
     show();
@@ -234,19 +225,46 @@ void Frame::play() {
             cur_point.y = (cur_point.y - 1) < 0 ? 0 : cur_point.y - 1;
             show();
         } else if (key == keyMap->ENTER) {
+            if (isComplete()) {
+                std::cout << "数独求解成功\n";
+                getchar();
+                exit(0);
+            } else {
+                std::cout << "数独求解失败\n";
+            }
         }
     }
 }
 
+bool Frame::setPointValue(const point_t &stPoint, const int nValue) {
+    auto point = myMap[stPoint.x + stPoint.y * 9];
+    if (ERASED == point.state) {
+        cur_point = stPoint;
+        setValue(nValue);
+        return 1;
+    } else {
+        return 0;
+    }
+}
+void Frame::load(const char *filename) {
+    std::fstream fs;
+    fs.open(filename, std::fstream::in | std::fstream::out | std::fstream::app);
 
-void Frame::printLine(int line_no) const {
-    for (int colunm = 0; colunm < 9; ++colunm)
-        std::cout << "\u254B"
-                  << "\u2501"
-                  << ((cur_point.y == line_no && cur_point.x == colunm)
-                          ? "^"
-                          : "\u2501")
-                  << "\u2501";
-    std::cout << "\u254B"
-              << "\n";
+    for (int i = 0; i < 81; i++) {
+        int tmpState;
+        char ch;
+        fs >> ch;
+        if (ch == '$') {
+            tmpState = 1;
+            myMap[i].value = 0;
+        } else {
+            tmpState = 0;
+            myMap[i].value = ch - '0';
+        }
+
+        myMap[i].state = tmpState;
+    }
+
+    cur_point.x = 0;
+    cur_point.y = 0;
 }

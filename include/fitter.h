@@ -10,6 +10,8 @@ static const int UNSELECTED = 0;
 static const int INITED = 0;
 static const int ERASED = 1;
 
+class Frame;
+class Block;
 
 struct KeyMap {
     const char ESC = 0x1B;
@@ -31,7 +33,19 @@ using p_with_v = struct p_with_v {
     int state;
 };
 
-class Frame;
+// 数独块
+class Block {
+    int counts;
+    p_with_v *_numbers[9];
+  public:
+    Block() : counts(0) {};
+    bool isValid() const;
+    bool isFull() const;
+    void push_back(p_with_v *point);
+    void print() const;
+};
+
+
 class Key {
     Frame *view;
     point_t settedP;
@@ -53,16 +67,6 @@ class Key {
     void setCurValue(int curValue) { curVal = curValue; }
 };
 
-// 数独块
-class Block {
-    int counts;
-    p_with_v *_numbers[9];
-  public:
-    Block() : counts(0) {};
-    bool isValid() const;
-    bool isFull() const;
-    void print() const;
-};
 
 // 画布
 class Frame {
@@ -87,8 +91,12 @@ class Frame {
     void show() const;
     bool setPointValue(const point_t &, const int);
     bool setCurValue(const int nCurValue, int &nLastValue);
+    point_t getCurPoint() { return cur_point; }
+    bool isComplete();
     void load(const char *filename);
     void play();
 };
+
+
 
 #endif

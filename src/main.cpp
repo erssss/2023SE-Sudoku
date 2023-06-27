@@ -2,10 +2,11 @@
 
 #include <iomanip>
 #include "../include/controller.h"
+#include "fitter.h"
 
-using std::__cxx11::stoi;
 using std::cout;
 using std::string;
+using std::__cxx11::stoi;
 char *optarg = NULL;
 int optind = 1;
 int opterr = 1;
@@ -108,6 +109,10 @@ bool processArgs(int argc, char *argv[]) {
             std::cout << "[错误]请按照正确的格式输入: -c <counts>\n";
             return 0;
         }
+    } else if (arg == "-f") {
+        Frame frame;
+        frame.load("puzzle.txt");
+        frame.play();
     } else {
         for (int i = 1; i < argc; i++) {
             arg = argv[i];
