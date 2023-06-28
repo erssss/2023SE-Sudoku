@@ -36,7 +36,8 @@ bool Puzzle::Read(string path,int start) {
 
     int board_size = line.length() / 2 + 1;
     read = new char[board_size * board_size];
-    out = new char[board_size * board_size * 2];
+    out = new char[SIZE * SIZE * 2];
+    
 
     char ch;
     int cnt = 0;
@@ -87,7 +88,8 @@ void Puzzle::PrintSolver() {
 }
 
 void Puzzle::InitBoard() {
-     // PrintBoard();
+    //  PrintBoard();
+    //  std::cout<<"===============\n";
     int len = strlen(read);
     for (int ch = 0; ch < len;) {  // 依次读取每一个字符
         Init();
@@ -115,12 +117,13 @@ void Puzzle::InitBoard() {
          // 求解当前数独
         Solution();
         GetBoard();
-        if (ch < len)
-            out[out_cnt++] = '\n';
+        // if (ch < len)
+        //     out[out_cnt++] = '\n';
     }
 }
 
 void Puzzle::GetBoard() {
+    
     out_cnt = 0;
     for (int i = 1; i <= 9; i++) {
         for (int j = 1; j <= 9; j++) {
@@ -134,30 +137,31 @@ void Puzzle::GetBoard() {
 }
 
 void Puzzle::PrintBoard() {
-    for (int i = 1; i <= 81; i++) {
+    for (int i = 0; i < 81; i++) {
         std::cout << read[i];
     }
 }
-
+void Puzzle::PrintOut() {
+    for (int i = 0; i < strlen(out); i++) {
+        std::cout << out[i];
+    }
+}
 void Puzzle::Output(string path) {
-     // std::cout << "\nstart write " << out_cnt << "\n";
-    PrintSolver();
-     // PrintBoard();
+    // std::cout << "\nstart write " << out_cnt << "\n";
+    // PrintSolver();
+    // PrintBoard();
+    PrintOut();
     std::cout << "cnt = " << out_cnt << "\n";
-    std::ofstream solution_file("solved_" + path);  // 打开文件以写入模式
-
-    if (!solution_file) {
-        std::cout << "[失败]创建数独求解文件失败\n";
-        return;
-    }
+    std::ofstream solution_file("solved_" + path, std::ios::app);  // 打开文件以写入模式
+    char tmp[1];
+    tmp[0] = '\n';
+    solution_file.write(tmp,1);
     solution_file.write(out, std::strlen(out));
+    std::memset(read, 0, sizeof(char) * strlen(read));
 
-    if (!solution_file) {
-        std::cout << "[失败]输出数独解失败\n";
-    }
-
-    delete[] read;
-    delete[] out;
+    std::memset(out, 0, sizeof(char) * strlen(out));
+    // delete[] read;
+    // delete[] out;
     solution_file.close();
 }
 
@@ -265,7 +269,6 @@ bool Puzzle::Solution() {
         }
         std::sort(node + 1, node + cot + 1);
         if (!dfs(1, node)) {
-             // std::cout << ("有不合法数独\n");
             return 0;
         }
     }

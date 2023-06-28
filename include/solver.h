@@ -66,6 +66,7 @@ class Puzzle {
     void PrintBoard();
     char puzzleboard[SIZE][SIZE];  // 数独求解盘
     void InitBoard();
+    void PrintOut();
     void Output(string psth);
     bool Read(string path,int start);
     bool load(char mat[SIZE][SIZE]);

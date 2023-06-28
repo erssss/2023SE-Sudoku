@@ -15,7 +15,7 @@ class Generator {
     char chessboard[SIZE][SIZE];  // 数独终局盘
     char *out;
     int out_cnt;
-    int num;  // 数独终局数量
+    int num;  // 数独局数量
      // 数独模板
     char modle[11][11] = {
         "0",          "0abcdefghi", "0defghiabc", "0ghiabcdef", "0bcaefdhig",

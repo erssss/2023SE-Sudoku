@@ -26,18 +26,7 @@ std::uniform_int_distribution<> dis(0, 100);
 
 void Generator::Output() {
     std::ofstream generator_file(path);  // 打开输出文件
-
-    if (!generator_file) {
-        std::cout << "无法打开文件\n";
-        return;
-    }
-
     generator_file.write(out, out_cnt);
-
-    if (!generator_file) {
-        std::cout << "输出数独终局失败\n";
-    }
-
     delete[] out;
     generator_file.close();  // 关闭文件
 }
@@ -116,7 +105,7 @@ void Generator::Getpuzzle() {
             tmp_chessboard[i][j] = chessboard[i][j];
         }
     }
-    int hole_num = dis(gen) % hole_num_min + hole_num_max;
+    int hole_num = dis(gen) % (hole_num_max-hole_num_min) + hole_num_min;
 
      // 随机生成每个3*3内空格数量
      // while (sum <= hole_num) {
@@ -132,11 +121,11 @@ void Generator::Getpuzzle() {
      //     }
      // }
 
-    if (hardness == 0) {
+    if (hardness == 1) {
         hole_num = 20;
-    } else if (hardness == 1) {
-        hole_num = 35;
     } else if (hardness == 2) {
+        hole_num = 35;
+    } else if (hardness == 3) {
         hole_num = 55;
     }
 

@@ -85,22 +85,15 @@ bool processArgs(int argc, char *argv[]) {
     if (arg == "-s") {
         if (argc == 3) {
             path = argv[2];
-            try{
-                solve_sudoku(path, 1);
-            }
-            catch (...){
-                return 0;
-            }
-            return 1;
+            return solve_sudoku(path, 1);
         } else if (argc == 5 && strcmp(argv[3], "-n") == 0) {
             counts = stoi(argv[4]);
             if (counts > 1000000 || counts < 1) {
                 std::cout << "[错误]请输入正确的数量，范围是1~1000000\n";
                 return 0;
             } else {
-                solve_sudoku(argv[2], counts);
+                return solve_sudoku(argv[2], counts);
             }
-            return 1;
         } else {
             std::cout << "[错误]请按照正确的格式输入文件路径: -s <path>\n";
             
@@ -115,8 +108,8 @@ bool processArgs(int argc, char *argv[]) {
                 return 0;
             } else {
                 path = "sudoku_end.txt";
-                create_sudoku(path, is_puzzle, counts = counts);
-                return 1;
+                return create_sudoku(path, is_puzzle, is_unique, hole_num_min, hole_num_max,
+                      hardness, counts);
             }
         } else {
             std::cout << "[错误]请按照正确的格式输入: -c <counts>\n";
@@ -157,13 +150,11 @@ bool processArgs(int argc, char *argv[]) {
                 if (i + 1 >= argc) {
                     std::cout << "[错误]请按照正确的格式输入: -c <counts> -m "
                                  "<hardness>\n";
-                    
                     return 0;
                 }
                 hardness = stoi(argv[++i]);
                 if (hardness < 1 || hardness > 3) {
                     std::cout << "[错误]请输入正确的难度，范围是1~3\n";
-                    
                     return 0;
                 }
             } else if (arg == "-r") {
@@ -171,7 +162,6 @@ bool processArgs(int argc, char *argv[]) {
                     std::cout
                         << "[错误]请按照正确的格式输入: -n <counts> -m "
                            "<hardness> -r <hole_num_min ~ hole_num_max> \n";
-                    
                     return 0;
                 }
                 std::string range = argv[++i];
@@ -202,12 +192,12 @@ bool processArgs(int argc, char *argv[]) {
                 return 0;
             }
         }
-        path = "puzzle.txt";
+        path = "puzzle_new.txt";
         is_puzzle = 1;
-        create_sudoku(path, is_puzzle, is_unique, hole_num_min, hole_num_max,
+        return create_sudoku(path, is_puzzle, is_unique, hole_num_min, hole_num_max,
                       hardness, counts);
-        return 1;
     }
+    return 1;
 }
 
 int main(int argc, char **argv) {

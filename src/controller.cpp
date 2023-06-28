@@ -16,7 +16,7 @@ using std::cout;
 using std::string;
 
 
-void create_sudoku(string path, bool is_puzzle, bool is_unique,
+bool create_sudoku(string path, bool is_puzzle, bool is_unique,
                    int hole_num_min, int hole_num_max, int hardness,
                    int counts) {
 
@@ -24,32 +24,33 @@ void create_sudoku(string path, bool is_puzzle, bool is_unique,
                     is_unique);
     // std::cout<<"hardness = "<<board.hardness<<"\n";
     board.Create(is_puzzle);
-    if (!is_puzzle)
+    if (!is_puzzle){
         board.Output();
+    }
         // printSudokuBoard(SIZE-1,board.getChessboard());
     if (is_puzzle)
         std::cout << "[成功]数独谜题生成成功\n";
     else
         std::cout << "[成功]数独终局生成成功\n";
+    return 1;
 
 }
 
-void solve_sudoku(string path, int counts) {
+bool solve_sudoku(string path, int counts) {
 
     std::cout << "input_path = " << path << "\n";
     for(int i = 0;i<counts;i++){
         Puzzle puzzle;
-        if (!puzzle.Read(path,i*SIZE)) {
+        int lineno = i*SIZE;
+        if (!puzzle.Read(path,lineno)) {
             std::cout << ("[错误]求解数独文件路径不合法\n");
-            test_input_flag = 7;  // 求解数独文件路径不合法
-            return;
+            return 0;
         }
         puzzle.InitBoard();
         puzzle.Output(path);
-        fclose(solution_fp);
-        std::cout << "[成功]数独求解成功\n";
-        test_input_flag = 8;  // 求解数独命令合法
+        std::cout << "[成功]数独求解成功 "<<i+1<<"/"<<counts<<"\n";
     }
+    return 1;
 }
 
 void printSudokuBoard(int x, char board[SIZE][SIZE]) {
