@@ -83,11 +83,20 @@ make
 
 ### 求解数独游戏
 
-- 说明使用命令 `sudoku.exe -s [filepath]`可将文件中的数独谜题求解
-- 操作示例
-  ![image (5)](https://picse.sunbangyan.cn/2023/06/28/sxh0es.png)
-  同时，结果也会写入到solved_puzzle.txt中：
-  ![image (6)](https://picsz.sunbangyan.cn/2023/06/28/sxgljx.png)
+说明使用命令 `sudoku.exe -s [filepath]`可将文件中的数独谜题求解
+
+操作示例：
+
+
+![image (5)](https://picse.sunbangyan.cn/2023/06/28/sxh0es.png)
+
+
+
+同时，结果也会写入到solved_puzzle.txt中：
+
+
+![image (6)](https://picsz.sunbangyan.cn/2023/06/28/sxgljx.png)
+
 
 ## 进阶功能：在线解数独
 
@@ -98,18 +107,27 @@ sudoku -f
 ```
 
 即可打开数独问题文件里的数独谜题进行在线解题，如图所示：
+
+
 ![image (7)](https://picdm.sunbangyan.cn/2023/06/28/sxggkn.png)
 
 ### 操作说明
 
 使用的键功能如下：
+
+
 ![3919cde5861f9ec44143efe1a377a4e](https://picdg.sunbangyan.cn/2023/06/28/z6hipf.png)
+
+
 填入数字如下：
+
+
 ![80a54ebe7b6e18014d4bad64bb234c7](https://picdb.sunbangyan.cn/2023/06/28/z5eb60.png)
 
 # 质量分析
 
 编写脚本如下，对 `src`及 `include`文件夹下所有源代码进行代码的质量检测与分析，并消除所有警告：
+
 
 ```bash
 echo ********************* START TEST ********************* >> %OUTPUT_FILE%
@@ -135,6 +153,7 @@ type %OUTPUT_FILE%
 
 测试结果如下，可以看到已经消除所有警报：
 
+
 ![2220a4f69f496fea81fea26e45c59b9](https://picdz.sunbangyan.cn/2023/06/28/1163oc9.png)
 
 根据分析结果，所有文件都通过了 cpplint 的检查，没有发现任何问题。这意味着代码在格式和风格方面符合 cpplint 的要求，没有触发任何警告或错误。
@@ -142,6 +161,7 @@ type %OUTPUT_FILE%
 # 测试样例
 
 所使用的测试样例如下表：
+
 
 | 测试编号 |               测试用例               | 描述                           | 输入参数                                                    | 预期结果     |
 | :------: | :-----------------------------------: | ------------------------------ | ----------------------------------------------------------- | ------------ |
@@ -175,12 +195,19 @@ type %OUTPUT_FILE%
 
 控制台截图如下：
 
+
 [![pCwKQBQ.png](https://s1.ax1x.com/2023/06/28/pCwKQBQ.png)](https://imgse.com/i/pCwKQBQ)
+
+
 
 测试资源管理器如下：
 
+
 [![pCwKMng.png](https://s1.ax1x.com/2023/06/28/pCwKMng.png)](https://imgse.com/i/pCwKMng)
 
+
+
 覆盖率报告如下：
+
 
 ![04df33b1916b9d46ea86c8a8cdb17fc](https://picsr.sunbangyan.cn/2023/06/28/tsbzdy.png)
