@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <random>
+#include <chrono>
 #include <string>
 #include "../include/solver.h"
 #include "../include/generator.h"
@@ -16,9 +17,12 @@
 int idx[] = {1, 4, 7};
 extern FILE *puzzle_fp;
 extern FILE *generator_fp;
-std::random_device rd;
-std::mt19937 gen(rd());
-std::uniform_int_distribution<> dis(1, 6);
+auto now = std::chrono::high_resolution_clock::now();
+auto timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+// 将随机数种子与时间相关联
+std::mt19937 gen(static_cast<unsigned int>(timestamp));
+// std::mt19937 gen(2013216);
+std::uniform_int_distribution<> dis(0, 100);
 
 void Generator::Output() {
     std::ofstream generator_file(path);  // 打开输出文件
@@ -136,18 +140,30 @@ void Generator::Getpuzzle() {
         hole_num = 55;
     }
 
-    while (sum <= hole_num) {
-        empty[1] += (dis(gen) % 3 + 1);
-        sum += empty[1];
-        for (int i = 1; i <= 9 && sum <= hole_num; i++) {
-             // std::cout<<sum<<"<<<<\n";
-            if (empty[i - 1] >= 5)
-                empty[i] += (dis(gen) % 3);
-            else
-                empty[i] += (dis(gen) % 3 + 1);
-            sum += empty[i];
-        }
+    int block_sum = hole_num /9;
+
+    for (int i = 1; i <= 9 ; i++) {
+        empty[i] = block_sum;
+        sum += empty[i];
     }
+
+    for (int i = 1; i <= 9 && sum <= hole_num; i++) {
+        empty[i] ++;
+        sum ++;
+    }
+
+    // while (sum <= hole_num) {
+    //     empty[1] += (dis(gen) % 2 + 1);
+    //     sum += empty[1];
+    //     for (int i = 1; i <= 9 && sum <= hole_num; i++) {
+    //          // std::cout<<sum<<"<<<<\n";
+    //         if (empty[i - 1] >= 5)
+    //             empty[i] += (dis(gen) % 2);
+    //         else
+    //             empty[i] += (dis(gen) % 2 + 1);
+    //         sum += empty[i];
+    //     }
+    // }
 
     while (sum > hole_num) {
         int idx = dis(gen) % 9 + 1;

@@ -1,6 +1,7 @@
 // Copyright 2023 SE zjy&cry
 
 #include <iomanip>
+#include <assert.h>
 #include "../include/controller.h"
 #include "../include/fitter.h"
 
@@ -84,14 +85,25 @@ bool processArgs(int argc, char *argv[]) {
     if (arg == "-s") {
         if (argc == 3) {
             path = argv[2];
-            solve_sudoku(path, 1);
+            try{
+                solve_sudoku(path, 1);
+            }
+            catch (...){
+                return 0;
+            }
             return 1;
         } else if (argc == 5 && strcmp(argv[3], "-n") == 0) {
             counts = stoi(argv[4]);
-            solve_sudoku(argv[2], counts);
+            if (counts > 1000000 || counts < 1) {
+                std::cout << "[错误]请输入正确的数量，范围是1~1000000\n";
+                return 0;
+            } else {
+                solve_sudoku(argv[2], counts);
+            }
             return 1;
         } else {
             std::cout << "[错误]请按照正确的格式输入文件路径: -s <path>\n";
+            
             return 0;
         }
     } else if (arg == "-c") {
@@ -99,6 +111,7 @@ bool processArgs(int argc, char *argv[]) {
             counts = stoi(argv[2]);
             if (counts > 1000000 || counts < 1) {
                 std::cout << "[错误]请输入正确的数量，范围是1~1000000\n";
+                
                 return 0;
             } else {
                 path = "sudoku_end.txt";
@@ -107,6 +120,7 @@ bool processArgs(int argc, char *argv[]) {
             }
         } else {
             std::cout << "[错误]请按照正确的格式输入: -c <counts>\n";
+            
             return 0;
         }
     } else if (arg == "-f") {
@@ -129,23 +143,27 @@ bool processArgs(int argc, char *argv[]) {
             arg = argv[i];
             if (arg == "-n") {
                 if (i + 1 >= argc) {
-                    std::cout << "[错误]请按照正确的格式输入: -c <counts>\n";
+                    std::cout << "[错误]请按照正确的格式输入: -n <counts>\n";
+                    
                     return 0;
                 }
                 counts = stoi(argv[++i]);
                 if (counts >= 10000 || counts < 1) {
                     std::cout << "[错误]请输入正确的数量，范围是1~10000\n";
+                    
                     return 0;
                 }
             } else if (arg == "-m") {
                 if (i + 1 >= argc) {
                     std::cout << "[错误]请按照正确的格式输入: -c <counts> -m "
                                  "<hardness>\n";
+                    
                     return 0;
                 }
                 hardness = stoi(argv[++i]);
                 if (hardness < 1 || hardness > 3) {
                     std::cout << "[错误]请输入正确的难度，范围是1~3\n";
+                    
                     return 0;
                 }
             } else if (arg == "-r") {
@@ -153,6 +171,7 @@ bool processArgs(int argc, char *argv[]) {
                     std::cout
                         << "[错误]请按照正确的格式输入: -n <counts> -m "
                            "<hardness> -r <hole_num_min ~ hole_num_max> \n";
+                    
                     return 0;
                 }
                 std::string range = argv[++i];
@@ -162,6 +181,7 @@ bool processArgs(int argc, char *argv[]) {
                     std::cout
                         << "[错误]请按照正确的格式输入: -n <counts> -m "
                            "<hardness> -r <hole_num_min ~ hole_num_max> \n";
+                    
                     return 0;
                 }
                 hole_num_min = stoi(range.substr(0, marker));
@@ -170,6 +190,7 @@ bool processArgs(int argc, char *argv[]) {
                     !(hole_num_min <= 55 && hole_num_min >= 20) ||
                     hole_num_min > hole_num_max) {
                     std::cout << "[错误]请输入正确的数目，范围是20~55\n";
+                    
                     return 0;
                 }
             } else if (arg == "-u") {
@@ -177,6 +198,7 @@ bool processArgs(int argc, char *argv[]) {
             } else {
                 std::cout << "[错误] " << argv[1]
                           << " 不存在，请输入正确的参数\n";
+                
                 return 0;
             }
         }
