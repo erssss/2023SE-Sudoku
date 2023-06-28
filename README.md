@@ -71,14 +71,20 @@ make
 
 - 说明使用命令 `sudoku.exe -c 20` 可生成20个数独终盘
 - 操作示例
+
+
   ![image (2)](https://picdl.sunbangyan.cn/2023/06/28/sxiu21.png)
 
 ### 生成数独游戏
 
 - 说明使用命令 `sudoku.exe -n [count]`可生成指定数量的数独游戏，可以配合下面的参数实现指定要求的数独游戏的生成：-m可以指定游戏的难度，而-r可以指定挖空的数量，-u可以指定生成的数独游戏具有唯一解。
+
 - 操作示例
+
   ![image (3)](https://picsg.sunbangyan.cn/2023/06/28/sxhist.png)
+  
   在puzzle.txt中生成了未解开的数独游戏：
+  
   ![image (4)](https://picdj.sunbangyan.cn/2023/06/28/sxh6lz.png)
 
 ### 求解数独游戏
