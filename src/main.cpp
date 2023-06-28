@@ -113,6 +113,17 @@ bool processArgs(int argc, char *argv[]) {
         Frame frame;
         frame.load("puzzle.txt");
         frame.play();
+    } else if (arg == "-h") {
+        std::cout << "[操作提示]:\n";
+        std::cout << "\t-c | 创建数独终局\n"; 
+        std::cout << "\t-s | 求解数独\n"; 
+        std::cout << "\t-f | 数独填空\n";
+        std::cout << "\t-n | 创建数独题目数量\n"; 
+        std::cout << "\t-m | 数独难度\n";
+        std::cout << "\t-r | 数独填空数目区间\n";
+        std::cout << "\t-u | 创建数独解唯一\n";
+        std::cout << "\t-h | 操作提示\n";
+        return 1;
     } else {
         for (int i = 1; i < argc; i++) {
             arg = argv[i];
