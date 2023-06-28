@@ -1,0 +1,20 @@
+********************* START TEST ********************* 
+--------- Checking: G:\repo\2023SE-sudoku\include\controller.h --------- 
+Done processing G:\repo\2023SE-sudoku\include\controller.h
+--------- Checking: G:\repo\2023SE-sudoku\include\fitter.h --------- 
+Done processing G:\repo\2023SE-sudoku\include\fitter.h
+--------- Checking: G:\repo\2023SE-sudoku\include\generator.h --------- 
+Done processing G:\repo\2023SE-sudoku\include\generator.h
+--------- Checking: G:\repo\2023SE-sudoku\include\solver.h --------- 
+Done processing G:\repo\2023SE-sudoku\include\solver.h
+--------- Checking: G:\repo\2023SE-sudoku\src\controller.cpp --------- 
+Done processing G:\repo\2023SE-sudoku\src\controller.cpp
+--------- Checking: G:\repo\2023SE-sudoku\src\fitter.cpp --------- 
+Done processing G:\repo\2023SE-sudoku\src\fitter.cpp
+--------- Checking: G:\repo\2023SE-sudoku\src\generator.cpp --------- 
+Done processing G:\repo\2023SE-sudoku\src\generator.cpp
+--------- Checking: G:\repo\2023SE-sudoku\src\main.cpp --------- 
+Done processing G:\repo\2023SE-sudoku\src\main.cpp
+--------- Checking: G:\repo\2023SE-sudoku\src\solver.cpp --------- 
+Done processing G:\repo\2023SE-sudoku\src\solver.cpp
+********************* END TEST ********************* 

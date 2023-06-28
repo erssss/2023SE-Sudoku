@@ -68,7 +68,7 @@ class Puzzle {
     void InitBoard();
     void PrintOut();
     void Output(string psth);
-    bool Read(string path,int start);
+    bool Read(string path, int start);
     bool load(char mat[SIZE][SIZE]);
     void PrintSolver();
     bool Solution();  // 数独求解 1.唯一解填充 2.dfs可行解

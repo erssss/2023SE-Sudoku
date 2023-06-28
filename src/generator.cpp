@@ -18,7 +18,8 @@ int idx[] = {1, 4, 7};
 extern FILE *puzzle_fp;
 extern FILE *generator_fp;
 auto now = std::chrono::high_resolution_clock::now();
-auto timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+auto timestamp = std::chrono::duration_cast<std::chrono::milliseconds>
+    (now.time_since_epoch()).count();
 // 将随机数种子与时间相关联
 std::mt19937 gen(static_cast<unsigned int>(timestamp));
 // std::mt19937 gen(2013216);
@@ -135,10 +136,9 @@ void Generator::Getpuzzle() {
         empty[i] = block_sum;
         sum += empty[i];
     }
-
     for (int i = 1; i <= 9 && sum <= hole_num; i++) {
-        empty[i] ++;
-        sum ++;
+        empty[i]++;
+        sum++;
     }
 
     // while (sum <= hole_num) {

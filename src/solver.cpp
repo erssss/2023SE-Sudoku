@@ -14,7 +14,7 @@ using std::__cxx11::stoi;
 
 extern FILE *solution_fp;
 
-bool Puzzle::Read(string path,int start) {
+bool Puzzle::Read(string path, int start) {
     std::ifstream input_file(path);
 
     if (!input_file) {
@@ -26,9 +26,9 @@ bool Puzzle::Read(string path,int start) {
     input_file.seekg(0, std::ios::beg);  // 将文件指针定位到文件开头
 
     int currentLine = 0;
-    while(currentLine < start&&std::getline(input_file, line)) {
-            currentLine++;
-        }
+    while (currentLine < start && std::getline(input_file, line)) {
+        currentLine++;
+    }
     if (currentLine != start) {
         std::cerr << "[错误]输入文件不完整\n";
         return 0;
@@ -37,16 +37,16 @@ bool Puzzle::Read(string path,int start) {
     int board_size = line.length() / 2 + 1;
     read = new char[board_size * board_size];
     out = new char[SIZE * SIZE * 2];
-    
 
     char ch;
     int cnt = 0;
     int readlines = 0;
-    while (readlines<SIZE && input_file >> std::noskipws >> ch ) {
-        if(ch=='\n')readlines++;
+    while (readlines < SIZE && input_file >> std::noskipws >> ch) {
+        if (ch == '\n')
+            readlines++;
         if (!std::isspace(ch)) {
             read[cnt++] = ch;
-             // std::cout << ch;   // 输出非空格字符
+             // std::cout << ch;    // 输出非空格字符
         }
     }
     input_file.close();
@@ -88,8 +88,8 @@ void Puzzle::PrintSolver() {
 }
 
 void Puzzle::InitBoard() {
-    //  PrintBoard();
-    //  std::cout<<"===============\n";
+     //  PrintBoard();
+     //  std::cout<<"===============\n";
     int len = strlen(read);
     for (int ch = 0; ch < len;) {  // 依次读取每一个字符
         Init();
@@ -117,13 +117,12 @@ void Puzzle::InitBoard() {
          // 求解当前数独
         Solution();
         GetBoard();
-        // if (ch < len)
-        //     out[out_cnt++] = '\n';
+         // if (ch < len)
+         //     out[out_cnt++] = '\n';
     }
 }
 
 void Puzzle::GetBoard() {
-    
     out_cnt = 0;
     for (int i = 1; i <= 9; i++) {
         for (int j = 1; j <= 9; j++) {
@@ -147,21 +146,22 @@ void Puzzle::PrintOut() {
     }
 }
 void Puzzle::Output(string path) {
-    // std::cout << "\nstart write " << out_cnt << "\n";
-    // PrintSolver();
-    // PrintBoard();
+     // std::cout << "\nstart write " << out_cnt << "\n";
+     // PrintSolver();
+     // PrintBoard();
     PrintOut();
     std::cout << "cnt = " << out_cnt << "\n";
-    std::ofstream solution_file("solved_" + path, std::ios::app);  // 打开文件以写入模式
+    std::ofstream solution_file("solved_" + path,
+                                std::ios::app);  // 打开文件以写入模式
     char tmp[1];
     tmp[0] = '\n';
-    solution_file.write(tmp,1);
+    solution_file.write(tmp, 1);
     solution_file.write(out, std::strlen(out));
     std::memset(read, 0, sizeof(char) * strlen(read));
 
     std::memset(out, 0, sizeof(char) * strlen(out));
-    // delete[] read;
-    // delete[] out;
+     // delete[] read;
+     // delete[] out;
     solution_file.close();
 }
 
