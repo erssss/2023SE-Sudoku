@@ -10,6 +10,8 @@
 
 本手册旨在向用户提供有关生成数独游戏并求解数独问题的控制台程序的详细信息和操作指南。它适用于计算机科学爱好者、编程学习者以及对数独游戏感兴趣的用户。本手册将帮助您了解如何正确安装、配置和使用该控制台程序，并获得最佳的用户体验。
 
+[本项目的github仓库链接](https://github.com/erssss/2023SE-Sudoku)
+
 ## 背景信息
 
 数独游戏作为一种受欢迎的智力游戏，在全球范围内拥有广泛的玩家群体。然而，手动创建数独终局并求解数独问题需要一定的时间和技巧。因此，生成数独游戏并求解数独问题的控制台程序应运而生，它能够自动创建数独终局，并提供一种快速有效的方式来解决数独问题。
@@ -131,8 +133,6 @@ type %OUTPUT_FILE%
 
 ```
 
-
-
 测试结果如下，可以看到已经消除所有警报：
 
 ![2220a4f69f496fea81fea26e45c59b9](https://picdz.sunbangyan.cn/2023/06/28/1163oc9.png)
@@ -170,8 +170,6 @@ type %OUTPUT_FILE%
 |    23    |    CreateSudokuInvalidArgsRnumber    | 使用无效 r 参数创建数独       | program_name, -n, 2, -r, 20-50                              | ASSERT_FALSE |
 |    24    |     CreateSudokuValidArgsRnumber     | 使用有效 r 参数创建数独       | program_name, -n, 2, -r, 20~50                              | ASSERT_TRUE  |
 |    25    |     CreateSudokuInvalidArgsRange     | 使用无效范围参数创建数独       | program_name, -n, 2, -r, 5~80                               | ASSERT_FALSE |
-
-
 
 如图所示，使用 `Google Test + openCppCoverage` 进行测试，除了拓展中需要用户额外响应的fitter外，可以看到25个测试样例均通过，代码覆盖率达到100%。
 
